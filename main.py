@@ -2,13 +2,14 @@ from datetime import datetime, timedelta
 from typing import Any, cast
 import unicodedata
 
+import flask
+import functions_framework
+
 import requests
-from dotenv import dotenv_values
 from icalendar import Calendar, Event, vText
 import pytz
 
 session_requests = requests.Session()
-env = dotenv_values(".env")
 
 url_authenticate = "https://api.sporteasy.net/v2.1/account/authenticate/"
 url_list_teams = "https://api.sporteasy.net/v2.1/me/teams/"
@@ -29,6 +30,8 @@ def login(username: str, password: str) -> str:
         "username": username,
         "password": password,
     })
+    if authenticate_response.status_code != 200:
+        raise Exception("Authentication error")
     token: str = authenticate_response.cookies.get("sporteasy")
     # csrf = authenticate_response.cookies.get(csrf_name)
     return token
@@ -81,7 +84,7 @@ def event_to_calendar_event(team_id: int, team_name: str, event_data: EVENT_TYPE
             event_data["category"]
         )["localized_name"]
     )
-    name = normalize(event_data["name"])
+    name = normalize(cast(str, event_data["name"]))
     if team_name not in name:
         summary = f"{team_name} - {name}"
     else:
@@ -109,7 +112,7 @@ def event_to_calendar_event(team_id: int, team_name: str, event_data: EVENT_TYPE
             if cast(str, ppc["slug_name"]).lower() in PLAYED_WORDS
         )
         not_present_people_count = sum(
-            ppc["count"]
+            cast(int, ppc["count"])
             for ppc in attendance_groups
             if cast(str, ppc["slug_name"]).lower() not in PLAYED_WORDS
         )
@@ -121,19 +124,7 @@ def event_to_calendar_event(team_id: int, team_name: str, event_data: EVENT_TYPE
     return event
 
 
-def write_calendar_to_file(cal: Calendar) -> None:
-    content = cal.to_ical().decode("utf-8").strip()
-    content = content.replace("\r", "\n").replace("\n\n", "\n")
-    with open("./test.ics", "w", encoding="utf-8") as f:
-        f.write(content)
-
-
-def main() -> None:
-    username = env.get("username")
-    password = env.get("password")
-    assert type(username) is str
-    assert type(password) is str
-
+def get_calendar_text(username: str, password: str) -> str:
     login(username, password)
     teams = list_teams()
 
@@ -150,8 +141,44 @@ def main() -> None:
                 event_to_calendar_event(team_id, team_name, event)
             )
 
-    write_calendar_to_file(cal)
+    text_calendar: str = cal \
+        .to_ical() \
+        .decode("utf-8") \
+        .strip() \
+        .replace("\r", "\n") \
+        .replace("\n\n", "\n")
+
+    return text_calendar
 
 
-main()
-print()
+@functions_framework.http
+def main_request_handler(request: flask.Request) -> flask.Response:
+    try:
+        username = request.args.get("username")
+        password = request.args.get("password")
+        if username is None or not any(username) or password is None or not any(password):
+            raise Exception("Missing username and password")
+
+        calendar_text = get_calendar_text(username, password)
+
+        return flask.Response(calendar_text)
+    except Exception as e:
+        return flask.Response(str(e))
+
+
+def main() -> None:
+    from dotenv import dotenv_values
+    env = dotenv_values(".env")
+
+    username = env.get("username")
+    password = env.get("password")
+    assert type(username) is str
+    assert type(password) is str
+
+    calendar_content = get_calendar_text(username, password)
+    with open("./test.ics", "w", encoding="utf-8") as f:
+        f.write(calendar_content)
+
+
+if __name__ == "__main__":
+    main()
