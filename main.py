@@ -15,7 +15,7 @@ url_list_teams = "https://api.sporteasy.net/v2.1/me/teams/"
 url_list_seasons = "https://api.sporteasy.net/v2.1/teams/{team_id}/seasons/"
 url_list_events = "https://api.sporteasy.net/v2.1/teams/{team_id}/events/"
 
-PLAYED_WORDS = "played", "present"
+PLAYED_WORDS = "played", "present", "available"
 EVENT_TYPE = dict[str, int | str | Any | list[Any] | dict[str, Any]]
 TIMEZONE = pytz.timezone("UTC")
 
@@ -44,19 +44,17 @@ def list_teams() -> list[tuple[int, str]]:
 
 
 def list_events(team_id: int) -> list[EVENT_TYPE]:
-    response = session_requests.get(url_list_events.format(team_id=team_id))
+    response = session_requests.get(
+        url_list_events.format(team_id=team_id),
+        headers={"Accept-Language": "fr-FR"}
+    )
     data: list[EVENT_TYPE] = response.json()["results"]
     return data
 
 
-def event_to_calendar_event(team_name: str, event_data: EVENT_TYPE) -> Event:
+def event_to_calendar_event(team_id: int, team_name: str, event_data: EVENT_TYPE) -> Event:
     id_ = event_data["id"]
-    category_name = normalize(
-        cast(
-            dict[str, str | Any],
-            event_data["category"]
-        )["localized_name"]
-    )
+
     start_date = datetime.fromisoformat(cast(str, event_data["start_at"]))
     start_date = start_date.astimezone(TIMEZONE)
     end_date_str = cast(str | None, event_data["end_at"])
@@ -76,11 +74,34 @@ def event_to_calendar_event(team_name: str, event_data: EVENT_TYPE) -> Event:
 
     event = Event()
     event.add("uid", str(id_))
-    event.add("summary", f"{team_name} - {category_name}")
+
+    category_name = normalize(
+        cast(
+            dict[str, str | Any],
+            event_data["category"]
+        )["localized_name"]
+    )
+    name = normalize(event_data["name"])
+    if team_name not in name:
+        summary = f"{team_name} - {name}"
+    else:
+        summary = name
+
+    # opponent_right = cast(dict[str, int | str | None] | None, event_data["opponent_right"])
+    # opponent_left = cast(dict[str, int | str | None] | None, event_data["opponent_left"])
+    # if opponent_left is not None and opponent_right is not None:
+    #     if opponent_left["id"] == team_id:
+    #         opponent_name = opponent_right["short_name"]
+    #     else:
+    #         opponent_name = opponent_left["short_name"]
+    #     summary += f" - contre {opponent_name}"
+
+    event.add("summary", summary)
     event.add("dtstart", start_date)
     event.add("dtstamp", start_date)
     event.add("dtend", end_date)
 
+    description = ""
     if attendance_groups is not None:
         present_people_count = sum(
             cast(int, ppc["count"])
@@ -92,24 +113,12 @@ def event_to_calendar_event(team_name: str, event_data: EVENT_TYPE) -> Event:
             for ppc in attendance_groups
             if cast(str, ppc["slug_name"]).lower() not in PLAYED_WORDS
         )
-        event.add("description", f"Presents: {present_people_count} | Pas presents {not_present_people_count}")
+        description += f"\nPresents: {present_people_count} | Pas presents {not_present_people_count}"
+
+    event.add("description", description)
     event.add("location", location)
 
     return event
-
-
-def events_to_calendar(team_name: str, events: list[EVENT_TYPE]) -> Calendar:
-    cal = Calendar()
-    cal.add("summary", vText("SportEasyCalendar"))
-    cal.add("prodid", "-//Sporteasy Calendar Connector")
-    cal.add("version", "2.0")
-    cal.add("vtimezone", "UTC")
-
-    for event in events:
-        cal.add_component(
-            event_to_calendar_event(team_name, event)
-        )
-    return cal
 
 
 def write_calendar_to_file(cal: Calendar) -> None:
@@ -127,10 +136,19 @@ def main() -> None:
 
     login(username, password)
     teams = list_teams()
+
+    cal = Calendar()
+    cal.add("summary", vText("SportEasyCalendar"))
+    cal.add("prodid", "-//Sporteasy Calendar Connector")
+    cal.add("version", "2.0")
+    cal.add("vtimezone", "UTC")
+
     for team_id, team_name in teams:
         events = list_events(team_id)
-        cal = events_to_calendar(team_name, events)
-        break  # todo: remove
+        for event in events:
+            cal.add_component(
+                event_to_calendar_event(team_id, team_name, event)
+            )
 
     write_calendar_to_file(cal)
 
