@@ -19,3 +19,6 @@ def main_request_handler() -> flask.Response:
         return flask.Response(str(e))
 
 
+if __name__ == "__main__":
+    app.run(host="0.0.0.0")
+
