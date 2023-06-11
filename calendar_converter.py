@@ -2,9 +2,6 @@ from datetime import datetime, timedelta
 from typing import Any, cast
 import unicodedata
 
-import flask
-import functions_framework
-
 import requests
 from icalendar import Calendar, Event, vText
 import pytz
@@ -149,21 +146,6 @@ def get_calendar_text(username: str, password: str) -> str:
         .replace("\n\n", "\n")
 
     return text_calendar
-
-
-@functions_framework.http
-def main_request_handler(request: flask.Request) -> flask.Response:
-    try:
-        username = request.args.get("username")
-        password = request.args.get("password")
-        if username is None or not any(username) or password is None or not any(password):
-            raise Exception("Missing username and password")
-
-        calendar_text = get_calendar_text(username, password)
-
-        return flask.Response(calendar_text)
-    except Exception as e:
-        return flask.Response(str(e))
 
 
 def main() -> None:
