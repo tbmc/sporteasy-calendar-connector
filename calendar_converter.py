@@ -103,7 +103,7 @@ def event_to_calendar_event(team_id: int, team_name: str, event_data: EVENT_TYPE
     event.add("class", "PUBLIC")
     event.add("description", summary)
     event.add("sequence", 0)
-    event.add("transp", "TRANSPARENT")
+    event.add("transp", "OPAQUE")
 
     # todo: change this
     event.add("created", datetime(2020, 1, 1, 1, 1, 1))
@@ -142,7 +142,7 @@ def get_calendar_text(username: str, password: str) -> str:
     cal.add("calscale", "GREGORIAN")
     cal.add("method", "PUBLISH")
     cal.add("x-wr-calname", "SportEasy Calendar")
-    cal.add("x-wr-timezone", "UTC")
+    cal.add("x-wr-timezone", "Europe/Paris")
     cal.add("x-wr-caldesc", "SportEasy calendar as ics")
 
     for team_id, team_name in teams:
