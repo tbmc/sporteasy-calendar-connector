@@ -130,6 +130,11 @@ def get_calendar_text(username: str, password: str) -> str:
     cal.add("prodid", "-//Sporteasy Calendar Connector")
     cal.add("version", "2.0")
     cal.add("vtimezone", "UTC")
+    cal.add("calscale", "GREGORIAN")
+    cal.add("method", "PUBLISH")
+    cal.add("x-wr-calname", "SportEasy Calendar")
+    cal.add("x-wr-timezone", "UTC")
+    cal.add("x-wr-caldesc", "SportEasy calendar as ics")
 
     for team_id, team_name in teams:
         events = list_events(team_id)
