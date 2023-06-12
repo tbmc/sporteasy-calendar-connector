@@ -109,7 +109,7 @@ def _extract_event_description(event_data: EVENT_TYPE, event: Event) -> None:
             ))
         attendance_group_list.sort(reverse=True)
 
-        description = "\n".join([
+        description = ", ".join([
             f"{localized_name}: {count}"
             for _, localized_name, count in attendance_group_list
         ])
