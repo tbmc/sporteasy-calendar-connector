@@ -2,7 +2,7 @@ import base64
 import json
 
 import flask
-from calendar_converter import get_calendar_text
+from calendar_converter import CalendarConverter
 from dotenv import dotenv_values
 
 app = flask.Flask(__name__)
@@ -33,11 +33,16 @@ def main_request_handler() -> flask.Response:
         if username is None or not any(username) or password is None or not any(password):
             raise Exception("Missing username and password")
 
-        calendar_text = get_calendar_text(username, password)
+        calendar_converter = CalendarConverter()
+        calendar_text = calendar_converter.get_calendar_text(username, password)
 
-        return flask.Response(calendar_text, headers={
-            "Content-Type": "text/calendar; charset=utf-8"
-        })
+        return flask.Response(
+            calendar_text,
+            headers={
+                "Content-Type": "text/calendar; charset=utf-8"
+            },
+            mimetype="text/calendar",
+        )
     except Exception as e:
         return flask.Response(str(e))
 
