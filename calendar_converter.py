@@ -6,7 +6,6 @@ import requests
 from icalendar import Calendar, Event, vText
 import pytz
 
-
 url_authenticate = "https://api.sporteasy.net/v2.1/account/authenticate/"
 url_list_teams = "https://api.sporteasy.net/v2.1/me/teams/"
 url_list_seasons = "https://api.sporteasy.net/v2.1/teams/{team_id}/seasons/"
@@ -24,7 +23,7 @@ def normalize(any_str: str) -> str:
 class CalendarConverter:
     def __init__(self):
         self.session_requests = requests.Session()
-    
+
     def login(self, username: str, password: str) -> str:
         authenticate_response = self.session_requests.post(url_authenticate, {
             "username": username,
@@ -154,9 +153,7 @@ class CalendarConverter:
         text_calendar: str = cal \
             .to_ical() \
             .decode("utf-8") \
-            .strip() \
-            .replace("\r", "\n") \
-            .replace("\n\n", "\n")
+            .strip()
 
         return text_calendar
 
