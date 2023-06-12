@@ -1,7 +1,6 @@
 import base64
 import json
 
-base64
 import flask
 from calendar_converter import get_calendar_text
 from dotenv import dotenv_values
@@ -19,7 +18,7 @@ def main_request_handler() -> flask.Response:
 
         data_b64 = flask.request.args.get("data")
         if data_b64 is not None:
-            decoded = base64.b64decode((data_b64 + "=").encode("utf-8"))
+            decoded = base64.b64decode(data_b64.encode("utf-8"))
             data = json.loads(decoded)
             username = data["username"]
             password = data["password"]
