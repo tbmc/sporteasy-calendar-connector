@@ -73,7 +73,7 @@ def event_to_calendar_event(team_id: int, team_name: str, event_data: EVENT_TYPE
     attendance_groups = cast(list[dict[str, int | str]] | None, event_data["attendance_groups"])
 
     event = Event()
-    event.add("uid", str(id_))
+    event.add("uid", str(id_) + "@sporteasy.net")
 
     category_name = normalize(
         cast(
@@ -100,6 +100,15 @@ def event_to_calendar_event(team_id: int, team_name: str, event_data: EVENT_TYPE
     event.add("dtstart", start_date)
     event.add("dtstamp", start_date)
     event.add("dtend", end_date)
+    event.add("class", "PUBLIC")
+    event.add("description", summary)
+    event.add("sequence", 0)
+    event.add("transp", "TRANSPARENT")
+
+    # todo: change this
+    event.add("created", datetime(2020, 1, 1, 1, 1, 1))
+    event.add("last-modified", datetime(2020, 1, 1, 1, 1, 1))
+    event.add("status", "CONFIRMED")
 
     description = ""
     if attendance_groups is not None:
