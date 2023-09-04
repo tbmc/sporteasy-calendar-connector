@@ -56,10 +56,13 @@ def _extract_event_dates(event_data: EVENT_TYPE, event: Event) -> None:
 
 
 def _extract_event_location(event_data: EVENT_TYPE, event: Event) -> None:
+    if event_data is None or event_data["location"] is None:
+        return
+
     location = normalize(
         cast(
             dict[str, str | Any],
-            event_data["location"]
+            event_data["location"],
         )["formatted_address"]
     )
     event.add("location", location)
