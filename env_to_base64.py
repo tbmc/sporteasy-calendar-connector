@@ -8,10 +8,16 @@ env = dotenv_values(".env")
 username = env["username"]
 password = env["password"]
 
+# Team is optional
+team_id: str | None = env.get("team_id")
+
 data = {
     "username": username,
     "password": password,
 }
+
+if team_id is not None:
+    data["team_id"] = team_id
 
 params = urllib.parse.urlencode(data)
 

@@ -5,6 +5,7 @@ import unicodedata
 import requests
 from icalendar import Calendar, Event, vText
 import pytz
+from dotenv import dotenv_values
 
 url_authenticate = "https://api.sporteasy.net/v2.1/account/authenticate/"
 url_list_teams = "https://api.sporteasy.net/v2.1/me/teams/"
@@ -177,7 +178,7 @@ class CalendarConverter:
         data: list[EVENT_TYPE] = response.json()["results"]
         return data
 
-    def get_calendar_text(self, username: str, password: str) -> str:
+    def get_calendar_text(self, username: str, password: str, team_id: str | None = None) -> str:
         self.login(username, password)
         teams = self.list_teams()
 
@@ -192,8 +193,11 @@ class CalendarConverter:
         cal.add("x-wr-timezone", "Europe/Paris")
         cal.add("x-wr-caldesc", "SportEasy calendar as ics")
 
-        for team_id, team_name in teams:
-            events = self.list_events(team_id)
+        for current_team_id, team_name in teams:
+            # Ignore other teams
+            if team_id is not None and team_id != "" and int(team_id) != current_team_id:
+                continue
+            events = self.list_events(current_team_id)
             for event in events:
                 cal.add_component(
                     event_to_calendar_event(team_name, event)
@@ -207,17 +211,23 @@ class CalendarConverter:
         return text_calendar
 
 
-def main() -> None:
-    from dotenv import dotenv_values
+def load_env_data() -> tuple[str, str, str]:
     env = dotenv_values(".env")
 
     username = env.get("username")
     password = env.get("password")
+    team_id = env.get("team_id")
     assert type(username) is str
     assert type(password) is str
 
+    return username, password, team_id
+
+
+def main() -> None:
+    username, password, team_id = load_env_data()
+
     calendar_converter = CalendarConverter()
-    calendar_content = calendar_converter.get_calendar_text(username, password)
+    calendar_content = calendar_converter.get_calendar_text(username, password, team_id)
     with open("./test.ics", "w", encoding="utf-8") as f:
         f.write(calendar_content)
 
