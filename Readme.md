@@ -15,9 +15,12 @@ Take json and transform it to base64, then url encode it
 ```json
 {
     "username": "...",
-    "password": "..."
+    "password": "...",
+    "team_id": ...
 }
 ```
+
+``team_id`` is optional. 
 
 #### Url
 
