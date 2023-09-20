@@ -28,3 +28,7 @@ Take json and transform it to base64, then url encode it
 https://sporteasy-converter.***REMOVED***?data={base64Data}
 ``
 
+## Info
+
+SportEasy block IPs from server providers, so you should have a domestic IP.
+
