@@ -40,6 +40,9 @@ def request_handler() -> flask.Response:
     if username is None or not any(username) or password is None or not any(password):
         raise Exception("Missing username and password")
 
+    ip = flask.request.remote_addr
+    logging.info(f"New incoming request from {ip=} and {username=}")
+
     calendar_converter = CalendarConverter()
     calendar_text = calendar_converter.get_calendar_text(username, password, team_id)
 
