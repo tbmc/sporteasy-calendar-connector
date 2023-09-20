@@ -7,8 +7,8 @@ import flask
 from calendar_converter import CalendarConverter
 from dotenv import dotenv_values
 
-logging.basicConfig(filename="access.log", filemode="a", format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-                    datefmt="%Y-%m-%d %H:%M:%S", level=logging.INFO)
+logging.basicConfig(format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", datefmt="%Y-%m-%d %H:%M:%S",
+                    level=logging.INFO)
 
 app = flask.Flask(__name__)
 
