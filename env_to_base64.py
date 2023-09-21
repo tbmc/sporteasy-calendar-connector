@@ -26,6 +26,10 @@ data_64 = base64.b64encode(data_str.encode("utf-8"))
 
 data_b64 = data_64.decode("utf-8")
 
-print(f"https://sporteasy-converter.***REMOVED***?" + urllib.parse.urlencode({
+encoded_data = urllib.parse.urlencode({
     "data": data_b64
-}))
+})
+
+print(f'Data: "{encoded_data}"\n')
+print("Default URL:")
+print(f"https://sporteasy-converter.***REMOVED***?" + encoded_data)
