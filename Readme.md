@@ -10,11 +10,11 @@ Generates ICS from SportEasy
     username: {your SportEasy username}
     password: {your SportEasy password}
    ```
-3. **Optional** Filter by team
-   List teams with ``python3 list_teams.py`` and add `team_id=123456` to `.env`
+3. **Optional**: Filter by team
+   List teams with ``python3 list_teams.py`` and add `team_id={your team ID}` to `.env`
 4. Run ``python3 env_to_base64.py`` and use `Default URL`
 
-## Add it to Google Calendar
+## Add SportEasy events to Google Calendar
 
 1. Click here:
 
@@ -32,18 +32,24 @@ Example `docker-compose.yml`:
 version: "3"
 services:
   sporteasy-calendar-connector:
-    image: sporteasy-calendar-connector
-    build:
-      context: sporteasy-calendar-connector
-      dockerfile: ./Dockerfile
-    ports:
-      - "5000:5000"
-    volumes:
-      - ./sporteasy-calendar-connector-logs:/logs
-    restart: unless-stopped
+     image: tbmc/sporteasy-calendar-connector:latest
+     ports:
+       - "5000:5000"
+     volumes:
+       - ./sporteasy-calendar-connector-logs:/logs
+     restart: unless-stopped
 ```
 
 Application listen on port `5000`.
+
+
+
+The same image is available from 2 different registry:
+
+| Host                                                                                                           | Docker image                                                                                             |
+|----------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|
+| [ Github ]( https://github.com/tbmc/sporteasy-calendar-connector/pkgs/container/sporteasy-calendar-connector ) | [ ghcr.io/tbmc/sporteasy-calendar-connector:latest ]( ghcr.io/tbmc/sporteasy-calendar-connector:latest ) |
+| [ Docker Hub ]( https://hub.docker.com/r/tbmc/sporteasy-calendar-connector )                                   | [ tbmc/sporteasy-calendar-connector ]( tbmc/sporteasy-calendar-connector )                               |
 
 ## How to use it
 
