@@ -49,7 +49,7 @@ The same image is available from 2 different registry:
 | Host                                                                                                           | Docker image                                                                                             |
 |----------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|
 | [ Github ]( https://github.com/tbmc/sporteasy-calendar-connector/pkgs/container/sporteasy-calendar-connector ) | [ ghcr.io/tbmc/sporteasy-calendar-connector:latest ]( ghcr.io/tbmc/sporteasy-calendar-connector:latest ) |
-| [ Docker Hub ]( https://hub.docker.com/r/tbmc/sporteasy-calendar-connector )                                   | [ tbmc/sporteasy-calendar-connector ]( tbmc/sporteasy-calendar-connector )                               |
+| [ Docker Hub ]( https://hub.docker.com/r/tbmc/sporteasy-calendar-connector )                                   | [ tbmc/sporteasy-calendar-connector ]( tbmc/sporteasy-calendar-connector:latest )                               |
 
 ## How to use it
 
