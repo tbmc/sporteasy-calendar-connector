@@ -69,6 +69,17 @@ def _extract_event_location(event_data: EVENT_TYPE, event: Event) -> None:
     event.add("location", location)
 
 
+def _status_to_ics_status(sp_status: str) -> str:
+    sp_status = sp_status.upper()
+    if sp_status == "CONFIRMED":
+        return "CONFIRMED"
+    if sp_status == "CANCELLED":
+        return "CANCELLED"
+    if sp_status == "NEEDS-ACTION":
+        return "TENTATIVE"
+    return sp_status
+
+
 def _extract_event_summary(event_data: EVENT_TYPE, event: Event, team_name: str) -> None:
     name = normalize(cast(str, event_data["name"]))
     if team_name not in name:
@@ -94,7 +105,7 @@ def _extract_event_summary(event_data: EVENT_TYPE, event: Event, team_name: str)
 
         slug_presence = group.get("slug_name")
         presence = MY_PRESENCE.get(slug_presence)
-        event.add("status", presence)
+        event.add("status", _status_to_ics_status(presence))
 
     event.add("summary", summary)
 
