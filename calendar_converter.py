@@ -70,7 +70,6 @@ def _extract_event_location(event_data: EVENT_TYPE, event: Event) -> None:
 
 
 def _status_to_ics_status(sp_status: str) -> str:
-    return "TENTATIVE"
     sp_status = sp_status.upper()
     if sp_status == "CONFIRMED":
         return "CONFIRMED"
