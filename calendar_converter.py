@@ -105,7 +105,7 @@ def _extract_event_summary(event_data: EVENT_TYPE, event: Event, team_name: str)
 
         slug_presence = group.get("slug_name")
         presence = MY_PRESENCE.get(slug_presence)
-        event.add("status", _status_to_ics_status(presence))
+        # event.add("status", _status_to_ics_status(presence))
 
     event.add("summary", summary)
 
