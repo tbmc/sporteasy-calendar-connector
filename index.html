@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sporteasy Calendar Converter</title>
+
+    <link rel="icon" type="image/svg+xml"
+          href="data:image/svg+xml,%3Csvg role='img' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Ctitle%3EConvertio%3C/title%3E%3Cpath d='M12 .037C5.373.037 0 5.394 0 12c0 6.606 5.373 11.963 12 11.963 6.628 0 12-5.357 12-11.963C24 5.394 18.627.037 12 .037zm-.541 4.8c1.91-.13 3.876.395 5.432 1.934 1.426 1.437 2.51 3.44 2.488 5.317h2.133l-4.444 4.963-4.445-4.963h2.313c-.001-1.724-.427-2.742-1.78-4.076-1.325-1.336-2.667-2.11-4.978-2.303a9.245 9.245 0 013.281-.871zM6.934 6.95l4.445 4.963H9.066c0 1.724.426 2.742 1.778 4.076 1.326 1.336 2.667 2.112 4.978 2.305-2.684 1.268-6.22 1.398-8.71-1.064-1.427-1.437-2.512-3.44-2.489-5.317H2.488L6.934 6.95Z'/%3E%3C/svg%3E"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css"/>
+
+    <style>
+        :root {
+            --primary: #63c37b;
+        }
+    </style>
+</head>
+<body>
+<main class="container">
+    <article>
+        <header>
+            <span data-language="en">Generate Sporteasy Calendar Converter URL</span>
+            <span data-language="fr">Générer l'URL Sporteasy Calendar Converter</span>
+        </header>
+
+        <div data-language="en">
+            <p>
+                <span style="font-size: 2em; color: red; font-family: sans-serif">⚠</span>
+                You are about to enter your Sporteasy credentials. Potentially I could collect them.
+            </p>
+            <p>You can host it yourself using <a href="https://github.com/tbmc/sporteasy-calendar-connector">Github
+                repo</a></p>
+            <p>Your credentials are required to access your Sporteasy calendar.</p>
+
+            <label for="username">
+                Username
+                <input type="text" id="username" name="username" placeholder="Username" required>
+            </label>
+            <label for="password">
+                Password
+                <input type="password" id="password" name="password" placeholder="Password" required>
+            </label>
+            <label>
+                Team ID (optional)
+                <input type="text" name="teamId" placeholder="team ID">
+            </label>
+        </div>
+
+        <div data-language="fr">
+            <p>
+                <span style="font-size: 2em; color: red; font-family: sans-serif">⚠</span>
+                Vous êtes sur le point de rentrer vos identifiants pour SportEasy. Potentiellement je pourrais les
+                récupérer.
+            </p>
+            <p>
+                Vous pouvez l'héberger vous même en utilisant le <a
+                    href="https://github.com/tbmc/sporteasy-calendar-connector">repository Github</a>.
+            </p>
+            <p>
+                Vos identifiants sont nécessaires pour accéder à votre calendrier Sporteasy.
+            </p>
+            <label for="username">
+                Nom d'utilisateur
+                <input type="text" name="username" placeholder="Nom d'utilisateur" required>
+            </label>
+            <label for="password">
+                Mot de passe
+                <input type="password" name="password" placeholder="Mot de passe" required>
+            </label>
+            <label>
+                Id de l'équipe (optionnel)
+                <input type="text" name="teamId" placeholder="Id de l'équipe">
+            </label>
+        </div>
+
+        <footer>
+            <div data-language="en">
+                <div class="grid">
+                    <div></div>
+                    <a href="#" role="button" class="secondary outline reset">Reset</a>
+                    <a href="#" role="button" class="secondary list-teams">List teams</a>
+                    <a href="#" role="button" class="generate">Generate</a>
+                    <div></div>
+                </div>
+            </div>
+            <div data-language="fr">
+                <div class="grid">
+                    <div></div>
+                    <a href="#" role="button" class="secondary outline reset">Réinitiliser</a>
+                    <a href="#" role="button" class="secondary list-teams">Lister les équipes</a>
+                    <a href="#" role="button" class="generate">Générer</a>
+                    <div></div>
+                </div>
+            </div>
+
+        </footer>
+    </article>
+
+    <article class="list-team-article">
+        <header data-language="en">
+            Team list
+        </header>
+        <header data-language="fr">
+            Liste des équipes
+        </header>
+        <div class="list-team-content"></div>
+    </article>
+    
+    <article class="url">
+        <header data-language="en">
+            Generated URL
+        </header>
+        <header data-language="fr">
+            URL générée
+        </header>
+        <div class="url-content"></div>
+    </article>
+
+</main>
+
+<script>
+    // Remove language not corresponding to navigator language
+    const languageToRemove = navigator.language.search("fr") !== -1 ? "en" : "fr";
+    const components = document.querySelectorAll(`[data-language=${languageToRemove}]`);
+    for (const comp of components) {
+        comp.remove();
+    }
+
+    const usernameField = document.querySelector("input[name=username]");
+    const passwordField = document.querySelector("input[name=password]");
+    const teamIdField = document.querySelector("input[name=teamId]");
+
+    const listTeamsButton = document.getElementsByClassName("list-teams")[0];
+    const listTeamArticle = document.getElementsByClassName("list-team-article")[0];
+    const listTeamArticleContent = document.getElementsByClassName("list-team-content")[0];
+    
+    const urlArticle = document.getElementsByClassName("url")[0];
+    const urlArticleContent = document.getElementsByClassName("url-content")[0];
+
+    listTeamArticle.style.display = "none";
+    urlArticle.style.display = "none";
+
+    // Reset onClick
+    document.getElementsByClassName("reset")[0].addEventListener("click", () => {
+        usernameField.value = '';
+        passwordField.value = '';
+
+        usernameField.removeAttribute("aria-invalid");
+        passwordField.removeAttribute("aria-invalid");
+    });
+
+    function getDataAndValidate() {
+        let ok = true;
+        const username = usernameField.value;
+        const password = passwordField.value;
+        let teamId = teamIdField.value;
+        if (teamId === '')
+            teamId = null;
+
+        if (username === '') {
+            usernameField.setAttribute("aria-invalid", "true");
+            ok = false;
+        } else {
+            usernameField.setAttribute("aria-invalid", "false");
+        }
+
+        if (password === '') {
+            passwordField.setAttribute("aria-invalid", "true");
+            ok = false;
+        } else {
+            passwordField.setAttribute("aria-invalid", "false");
+        }
+
+        return [ok, username, password, teamId];
+    }
+
+    function generateData() {
+        const [ok, username, password, teamId] = getDataAndValidate();
+        if (!ok)
+            return null;
+
+        const data = {
+            username,
+            password,
+        };
+        if (teamId)
+            data.team_id = teamId;
+
+        const jsonData = JSON.stringify(data);
+        const base64Data = window.btoa(jsonData);
+        return encodeURIComponent(base64Data);
+    }
+
+    function listTeams() {
+        const data = generateData();
+        if (data == null)
+            return;
+
+        const origin = window.location.origin;
+        fetch(`${origin}/list-teams?data=${data}`)
+            .then(response => response.json())
+            .then((response) => {
+                listTeamArticle.style.display = "block";
+                let table = '';
+                for (const team of response) {
+                    const [teamId, teamName] = team;
+                    table += `
+                        <tr>
+                            <td>${teamName}</td>
+                            <td>${teamId}</td>
+                        </tr>
+                    `;
+                }
+
+                listTeamArticleContent.innerHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>ID</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${table}
+                    </tbody>
+                </table>
+                `;
+                ;
+            });
+    }
+
+    // List teams
+    listTeamsButton.addEventListener("click", () => {
+        listTeams();
+    });
+
+    // Generate onClick
+    document.getElementsByClassName("generate")[0].addEventListener("click", () => {
+        const data = generateData();
+        if (data == null)
+            return;
+
+        const origin = window.location.origin;
+        const url = `${origin}?data=${data}`;
+        
+        urlArticle.style.display = "block";
+        urlArticleContent.innerHTML = `
+            <a href="${url}">${url}</a>
+        `;
+    });
+
+</script>
+</body>
+</html>

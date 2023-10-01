@@ -19,8 +19,6 @@ data = {
 if team_id is not None:
     data["team_id"] = team_id
 
-params = urllib.parse.urlencode(data)
-
 data_str = json.dumps(data)
 data_64 = base64.b64encode(data_str.encode("utf-8"))
 

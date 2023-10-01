@@ -14,8 +14,11 @@ app = flask.Flask(__name__)
 
 env = dotenv_values(".env")
 
+with open("index.html", encoding="utf-8") as f:
+    html_content = f.read()
 
-def request_handler() -> flask.Response:
+
+def _decode_data() -> tuple[str, str, str | None]:
     username: str | None = None
     password: str | None = None
     team_id: str | None = None
@@ -40,6 +43,11 @@ def request_handler() -> flask.Response:
     if username is None or not any(username) or password is None or not any(password):
         raise Exception("Missing username and password")
 
+    return username, password, team_id
+
+
+def _request_handler_with_data() -> flask.Response:
+    username, password, team_id = _decode_data()
     ip = flask.request.remote_addr
     logging.info(f"New incoming request from {ip=} and {username=}")
 
@@ -53,6 +61,29 @@ def request_handler() -> flask.Response:
         },
         mimetype="text/calendar",
     )
+
+
+def _list_teams_response() -> str:
+    username, password, _ = _decode_data()
+    calendar_converter = CalendarConverter()
+    calendar_converter.login(username, password)
+    teams = calendar_converter.list_teams()
+    return json.dumps(teams)
+
+
+def request_handler() -> flask.Response:
+    # If no data, return html page
+    if "data" not in flask.request.args:
+        return flask.Response(html_content)
+    return _request_handler_with_data()
+
+
+@app.route("/list-teams")
+def list_teams() -> flask.Response:
+    try:
+        return flask.Response(_list_teams_response())
+    except Exception as e:
+        return flask.Response(e)
 
 
 @app.route("/")
