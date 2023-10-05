@@ -1,52 +1,32 @@
 import os
-import base64
+
 import json
 import logging
 
 import flask
-from calendar_converter import CalendarConverter
-from dotenv import dotenv_values
+from flask import send_from_directory
+from utils.calendar_converter import CalendarConverter
+from utils.data_decoder import _decode_data
 
 logging.basicConfig(format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", datefmt="%Y-%m-%d %H:%M:%S",
                     level=logging.INFO)
 
 app = flask.Flask(__name__)
 
-env = dotenv_values(".env")
-
-with open("index.html", encoding="utf-8") as f:
-    html_content = f.read()
-
-
-def _decode_data() -> tuple[str, str, str | None]:
-    username: str | None = None
-    password: str | None = None
-    team_id: str | None = None
-
-    data_b64 = flask.request.args.get("data")
-    if data_b64 is not None:
-        decoded = base64.b64decode(data_b64.encode("utf-8"))
-        data = json.loads(decoded)
-        username = data["username"]
-        password = data["password"]
-        team_id = data.get("team_id")
-
-    if username is None or password is None:
-        username = flask.request.args.get("username")
-        password = flask.request.args.get("password")
-        team_id = flask.request.args.get("team_id")
-
-    if username is None or password is None:
-        username = env.get("username")
-        password = env.get("password")
-        team_id = env.get("team_id")
-    if username is None or not any(username) or password is None or not any(password):
-        raise Exception("Missing username and password")
-
-    return username, password, team_id
+CORS_HEADERS = {
+    'Access-Control-Allow-Origin': '*'
+}
 
 
-def _request_handler_with_data() -> flask.Response:
+def _list_teams_response() -> str:
+    username, password, _ = _decode_data()
+    calendar_converter = CalendarConverter()
+    calendar_converter.login(username, password)
+    teams = calendar_converter.list_teams()
+    return json.dumps(teams)
+
+
+def request_handler() -> flask.Response:
     username, password, team_id = _decode_data()
     ip = flask.request.remote_addr
     logging.info(f"New incoming request from {ip=} and {username=}")
@@ -63,30 +43,17 @@ def _request_handler_with_data() -> flask.Response:
     )
 
 
-def _list_teams_response() -> str:
-    username, password, _ = _decode_data()
-    calendar_converter = CalendarConverter()
-    calendar_converter.login(username, password)
-    teams = calendar_converter.list_teams()
-    return json.dumps(teams)
-
-
-def request_handler() -> flask.Response:
-    # If no data, return html page
-    if "data" not in flask.request.args:
-        return flask.Response(html_content)
-    return _request_handler_with_data()
-
-
-@app.route("/list-teams")
+@app.route("/api/list-teams")
 def list_teams() -> flask.Response:
+    if flask.request.method == 'OPTIONS':
+        return flask.Response('', headers=CORS_HEADERS)
     try:
-        return flask.Response(_list_teams_response())
+        return flask.Response(_list_teams_response(), headers=CORS_HEADERS)
     except Exception as e:
-        return flask.Response(e)
+        return flask.Response(str(e), headers=CORS_HEADERS)
 
 
-@app.route("/")
+@app.route("/api")
 def main_request_handler() -> flask.Response:
     if os.environ.get("DEBUG"):
         return request_handler()
@@ -95,6 +62,16 @@ def main_request_handler() -> flask.Response:
         return request_handler()
     except Exception as e:
         return flask.Response(str(e))
+
+
+@app.route("/")
+def serve_static_index() -> flask.Response:
+    return send_from_directory("web-app/build", "index.html")
+
+
+@app.route("/<path:path>")
+def serve_static_files(path: str) -> flask.Response:
+    return send_from_directory("web-app/build", path)
 
 
 if __name__ == "__main__":

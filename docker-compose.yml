@@ -1,0 +1,11 @@
+version: "3"
+services:
+  sporteasy-calendar-connector:
+    image: sporteasy-calendar-connector
+    build:
+      context: ./
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./sporteasy-calendar-connector-logs:/logs
+    restart: unless-stopped
