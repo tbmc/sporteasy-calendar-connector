@@ -17,7 +17,7 @@ export function getOrigin() {
     origin = browser ? window.location.origin : '';
   }
   
-  return origin;
+  return `${origin}/api`;
 }
 
 export async function fetchTeamsGet(username: string, password: string) {

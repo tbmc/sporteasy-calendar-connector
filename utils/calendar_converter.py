@@ -1,44 +1,13 @@
 from datetime import datetime, timedelta
 from typing import Any, cast
-import unicodedata
 
 import requests
 from icalendar import Calendar, Event, vText
-import pytz
-from dotenv import dotenv_values
 
-url_authenticate = "https://api.sporteasy.net/v2.1/account/authenticate/"
-url_list_teams = "https://api.sporteasy.net/v2.1/me/teams/"
-url_list_seasons = "https://api.sporteasy.net/v2.1/teams/{team_id}/seasons/"
-url_list_events = "https://api.sporteasy.net/v2.1/teams/{team_id}/events/"
-
-PLAYED_WORDS = "played", "present", "available"
-EVENT_TYPE = dict[str, int | str | Any | list[Any] | dict[str, Any]]
-TIMEZONE = pytz.timezone("UTC")
-
-ORDER_PRESENT = {
-    "available": 50,
-    "played": 51,
-    "present": 52,
-    "rsvp": 40,
-    "not_selected": 30,
-    "unavailable": 10,
-    "not_played": 11,
-}
-
-MY_PRESENCE = {
-    "available": "CONFIRMED",
-    "played": "CONFIRMED",
-    "present": "CONFIRMED",
-    "rsvp": "NEEDS-ACTION",
-    "not_selected": "CANCELLED",
-    "unavailable": "CANCELLED",
-    "not_played": "CANCELLED",
-}
-
-
-def normalize(any_str: str) -> str:
-    return unicodedata.normalize("NFD", any_str)
+from utils.consts import EVENT_TYPE, TIMEZONE, MY_PRESENCE, ORDER_PRESENT, url_authenticate, url_list_teams, \
+    url_list_events
+from utils.env import load_env_data
+from utils.utils import normalize
 
 
 def _extract_event_dates(event_data: EVENT_TYPE, event: Event) -> None:
@@ -220,18 +189,6 @@ class CalendarConverter:
             .strip()
 
         return text_calendar
-
-
-def load_env_data() -> tuple[str, str, str]:
-    env = dotenv_values(".env")
-
-    username = env.get("username")
-    password = env.get("password")
-    team_id = env.get("team_id")
-    assert type(username) is str
-    assert type(password) is str
-
-    return username, password, team_id
 
 
 def main() -> None:

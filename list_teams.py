@@ -1,4 +1,4 @@
-from calendar_converter import CalendarConverter, load_env_data
+from utils.calendar_converter import CalendarConverter, load_env_data
 
 
 username, password, _ = load_env_data()
