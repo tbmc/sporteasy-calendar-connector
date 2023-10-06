@@ -54,10 +54,9 @@ def list_teams() -> flask.Response:
 
 
 @app.route("/api")
-def main_request_handler() -> flask.Response:
+def main_request_api_handler() -> flask.Response:
     if os.environ.get("DEBUG"):
         return request_handler()
-
     try:
         return request_handler()
     except Exception as e:
@@ -66,6 +65,13 @@ def main_request_handler() -> flask.Response:
 
 @app.route("/")
 def serve_static_index() -> flask.Response:
+    data = flask.request.args.get("data", None)
+    if data is not None:
+        # Redirect user to /api if data is passed to keep compatibility
+        redirect_route = flask.url_for('main_request_api_handler')
+        redirect_url = f"{redirect_route}?data={data}"
+        return flask.redirect(redirect_url)
+
     return send_from_directory("web-app/build", "index.html")
 
 
