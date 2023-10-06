@@ -90,19 +90,13 @@
   <footer>
     <div class="grid">
       <div />
-      <a href="#" role="button" class="secondary outline reset" on:click={reset}
-        >{$t('generateUrl.form.buttonReset')}</a
-      >
-      <a href="#" role="button" class="secondary list-teams" on:click={listTeams}>
-        {#if $fetchTeamsIsLoading}
-          <Loader />
-        {:else}
-          {$t('generateUrl.form.buttonListTeams')}
-        {/if}
-      </a>
-      <a href="#" role="button" class="generate" on:click={generateUrl}>
+      <button class="secondary outline reset" on:click={reset}>{$t('generateUrl.form.buttonReset')}</button>
+      <button class="secondary list-teams" on:click={listTeams} aria-busy={$fetchTeamsIsLoading}>
+        {$t('generateUrl.form.buttonListTeams')}
+      </button>
+      <button class="generate" on:click={generateUrl}>
         {$t('generateUrl.form.buttonGenerate')}
-      </a>
+      </button>
       <div />
     </div>
   </footer>
