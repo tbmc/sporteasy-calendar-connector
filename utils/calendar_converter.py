@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from typing import Any, cast
+from typing import Any, cast, Literal
 
 import requests
 from icalendar import Calendar, Event, vText
@@ -79,9 +79,9 @@ def _extract_event_summary(event_data: EVENT_TYPE, event: Event, team_name: str)
     event.add("summary", summary)
 
 
-def _extract_event_description(event_data: EVENT_TYPE, event: Event) -> None:
+def _extract_attendee_description(event_data: EVENT_TYPE) -> str:
     attendance_groups = cast(list[dict[str, int | str]] | None, event_data["attendance_groups"])
-    description = ""
+    attendee = ""
     if attendance_groups is not None:
         attendance_group_list: list[tuple[int, str, int]] = []
         for ppc in attendance_groups:
@@ -93,17 +93,53 @@ def _extract_event_description(event_data: EVENT_TYPE, event: Event) -> None:
             ))
         attendance_group_list.sort(reverse=True)
 
-        description = ", ".join([
+        attendee = ", ".join([
             f"{localized_name}: {count}"
             for _, localized_name, count in attendance_group_list
         ])
+
+    return attendee
+
+
+def _extract_scores_for_opponent(event_data: EVENT_TYPE, left_or_right: Literal["left", "right"]) \
+        -> tuple[str, int] | None:
+    opponent = event_data.get(f"opponent_{left_or_right}")
+    if opponent is None:
+        return None
+    score_str = opponent.get("score")
+    if score_str is None:
+        return None
+    name = cast(str, opponent.get("short_name"))
+    score = int(cast(str, score_str))
+    return name, score
+
+
+def _extract_scores(event_data: EVENT_TYPE) -> str | None:
+    left = _extract_scores_for_opponent(event_data, "left")
+    right = _extract_scores_for_opponent(event_data, "right")
+
+    if left is None or right is None:
+        return None
+
+    left_name, left_score = left
+    right_name, right_score = right
+    return f"{left_name} {left_score} - {right_score} {right_name}"
+
+
+def _extract_event_description(event_data: EVENT_TYPE, event: Event) -> None:
+    description = ""
+    score = _extract_scores(event_data)
+    if score is not None:
+        description += f"{score}\n"
+    attendee = _extract_attendee_description(event_data)
+    description += attendee
 
     event.add("description", description.strip())
 
 
 def event_to_calendar_event(team_name: str, event_data: EVENT_TYPE) -> Event:
     event = Event()
-    event.add("uid", str(event_data["id"]) + "@sporteasy.net")
+    event.add("uid", str(event_data["id"]) + f"@sporteasy.net")
     _extract_event_location(event_data, event)
     _extract_event_dates(event_data, event)
     _extract_event_summary(event_data, event, team_name)
