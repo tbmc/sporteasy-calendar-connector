@@ -6,7 +6,7 @@ import logging
 import flask
 from flask import send_from_directory
 from utils.calendar_converter import CalendarConverter
-from utils.data_decoder import _decode_data
+from utils.data_decoder import decode_data
 
 logging.basicConfig(format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", datefmt="%Y-%m-%d %H:%M:%S",
                     level=logging.INFO)
@@ -19,7 +19,7 @@ CORS_HEADERS = {
 
 
 def _list_teams_response() -> str:
-    username, password, _ = _decode_data()
+    username, password, _ = decode_data()
     calendar_converter = CalendarConverter()
     calendar_converter.login(username, password)
     teams = calendar_converter.list_teams()
@@ -27,7 +27,7 @@ def _list_teams_response() -> str:
 
 
 def request_handler() -> flask.Response:
-    username, password, team_id = _decode_data()
+    username, password, team_id = decode_data()
     ip = flask.request.remote_addr
     logging.info(f"New incoming request from {ip=} and {username=}")
 

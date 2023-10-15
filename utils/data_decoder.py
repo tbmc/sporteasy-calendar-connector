@@ -5,7 +5,7 @@ import json
 from .env import env
 
 
-def _decode_data() -> tuple[str, str, str | None]:
+def decode_data() -> tuple[str, str, str | None]:
     username: str | None = None
     password: str | None = None
     team_id: str | None = None
