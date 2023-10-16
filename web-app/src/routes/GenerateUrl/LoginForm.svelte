@@ -3,9 +3,7 @@
 
   import { dataToRequestParam } from './dataToRequestParam';
   import { fetchTeamsGet, fetchTeamsIsLoading, dataParams } from './store';
-
-  import Loader from './Loader.svelte';
-
+  
   let usernameTranslation = $t('generateUrl.form.username');
   let passwordTranslation = $t('generateUrl.form.password');
   let teamIdTranslation = $t('generateUrl.form.teamId');
@@ -13,10 +11,19 @@
   let username = '';
   let password = '';
   let teamId = '';
+  
+  let invalidUsername = null;
+  let invalidPassword = null;
 
+  function clicked() {
+    invalidUsername = username === '';
+    invalidPassword = password === '';
+  }
+  
   function listTeams() {
-    clickedOnce = true;
     if (username !== '' && password !== '') fetchTeamsGet(username, password);
+    
+    clicked();
   }
 
   function generateUrl() {
@@ -24,6 +31,8 @@
       const data = dataToRequestParam(username, password, teamId);
       dataParams.set(data);
     }
+    
+    clicked();
   }
 
   function reset() {
@@ -31,10 +40,8 @@
     password = '';
     teamId = '';
 
-    clickedOnce = true;
+    clicked();
   }
-
-  let clickedOnce = false;
 </script>
 
 <article>
@@ -65,7 +72,7 @@
           placeholder={usernameTranslation}
           required
           bind:value={username}
-          aria-invalid={clickedOnce && username === ''}
+          aria-invalid={invalidUsername}
         />
       </label>
       <label for="password">
@@ -77,7 +84,7 @@
           placeholder={passwordTranslation}
           required
           bind:value={password}
-          aria-invalid={clickedOnce && password === ''}
+          aria-invalid={invalidPassword}
         />
       </label>
       <label for="teamId">
