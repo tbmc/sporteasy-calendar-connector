@@ -208,6 +208,8 @@ class CalendarConverter:
         cal.add("x-wr-calname", "SportEasy Calendar")
         cal.add("x-wr-timezone", "Europe/Paris")
         cal.add("x-wr-caldesc", "SportEasy calendar as ics")
+        cal.add("REFRESH-INTERVAL;VALUE=DURATION", "PT8H")
+        cal.add("X-PUBLISHED-TTL", "PT8H")
 
         for current_team_id, team_name in teams:
             # Ignore other teams
