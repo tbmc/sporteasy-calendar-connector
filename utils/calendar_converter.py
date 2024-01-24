@@ -1,3 +1,4 @@
+import time
 from datetime import datetime, timedelta
 from typing import Any, cast, Literal
 
@@ -146,10 +147,11 @@ def event_to_calendar_event(team_name: str, event_data: EVENT_TYPE) -> Event:
     _extract_event_description(event_data, event)
 
     event.add("class", "PUBLIC")
-    event.add("sequence", 0)
+    current_timestamp = int(time.time() / 10)
+    event.add("sequence", current_timestamp)
     event.add("transp", "OPAQUE")
 
-    # todo: change this
+    # todo: change this if possible
     event.add("created", datetime(2020, 1, 1, 1, 1, 1))
     event.add("last-modified", datetime(2020, 1, 1, 1, 1, 1))
 
