@@ -1,7 +1,7 @@
-<script>
+<script lang="ts">
   import { t } from 'svelte-i18n';
 
-  import {dataParams, getOrigin} from './store';
+  import {dataParams, getOrigin} from './store.js';
 
   const origin = getOrigin();
   $: url = `${origin}?data=${$dataParams}`;

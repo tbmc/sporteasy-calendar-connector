@@ -1,8 +1,8 @@
-<script>
+<script lang="ts">
   import { t } from 'svelte-i18n';
-
-  import { dataToRequestParam } from './dataToRequestParam';
-  import { fetchTeamsGet, fetchTeamsIsLoading, dataParams } from './store';
+  
+  import {dataToRequestParam} from "$lib/GenerateUrl/dataToRequestParam.js";
+  import {dataParams, fetchTeamsGet, fetchTeamsIsLoading} from "$lib/GenerateUrl/store.js";
   
   let usernameTranslation = $t('generateUrl.form.username');
   let passwordTranslation = $t('generateUrl.form.password');
@@ -12,8 +12,8 @@
   let password = '';
   let teamId = '';
   
-  let invalidUsername = null;
-  let invalidPassword = null;
+  let invalidUsername: boolean | null = null;
+  let invalidPassword: boolean | null = null;
 
   function clicked() {
     invalidUsername = username === '';

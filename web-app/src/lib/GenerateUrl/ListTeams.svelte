@@ -1,7 +1,7 @@
-<script>
+<script lang="ts">
   import { t } from 'svelte-i18n';
 
-  import { fetchTeamsData, fetchTeamsLoadedOnce } from './store';
+  import { fetchTeamsData, fetchTeamsLoadedOnce } from './store.js';
 
   $: data = $fetchTeamsData.map((t) => ({
     id: t[0],
