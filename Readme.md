@@ -4,7 +4,7 @@ Generates ICS from SportEasy
 
 ## Simple and rapid use
 
-Go to https://sporteasy-converter.***REMOVED***/
+Go to https://sporteasy-calendar-connector.tbmc.ovh
 
 ## Add SportEasy events to Google Calendar
 
@@ -24,10 +24,10 @@ Application listen on port `5000`.
 
 The same image is available from 2 different registry:
 
-| Host                                                                                                           | Docker image                                                                                             |
-|----------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|
-| [ Github ]( https://github.com/tbmc/sporteasy-calendar-connector/pkgs/container/sporteasy-calendar-connector ) | [ ghcr.io/tbmc/sporteasy-calendar-connector:latest ]( ghcr.io/tbmc/sporteasy-calendar-connector:latest ) |
-| [ Docker Hub ]( https://hub.docker.com/r/tbmc/sporteasy-calendar-connector )                                   | [ tbmc/sporteasy-calendar-connector ]( tbmc/sporteasy-calendar-connector:latest )                        |
+| Host                                                                                                           | Docker image                                     |
+|----------------------------------------------------------------------------------------------------------------|--------------------------------------------------|
+| [ Github ]( https://github.com/tbmc/sporteasy-calendar-connector/pkgs/container/sporteasy-calendar-connector ) | ghcr.io/tbmc/sporteasy-calendar-connector:latest |
+| [ Docker Hub ]( https://hub.docker.com/r/tbmc/sporteasy-calendar-connector )                                   | tbmc/sporteasy-calendar-connector:latest         |
 
 ## How to use it
 
@@ -67,7 +67,7 @@ You can use mine, but at your own risk.
 :warning: Data in base64 are not ciphered.
 
 ``
-https://sporteasy-converter.***REMOVED***?data={base64Data}
+https://sporteasy-calendar-connector.tbmc.ovh?data={base64Data}
 ``
 
 ## Info

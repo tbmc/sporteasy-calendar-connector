@@ -30,4 +30,4 @@ encoded_data = urllib.parse.urlencode({
 
 print(f'Data: "{encoded_data}"\n')
 print("Default URL:")
-print(f"https://sporteasy-converter.***REMOVED***?" + encoded_data)
+print(f"https://sporteasy-calendar-connector.tbmc.ovh?" + encoded_data)
