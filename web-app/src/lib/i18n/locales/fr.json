@@ -17,8 +17,9 @@
     "listTeams": {
       "title": "Liste des équipes",
       "name": "Nom de l'équipe",
-      "id": "Identifiant de l'équipe" 
+      "id": "Identifiant de l'équipe"
     },
     "urlGenerated": "URL générée"
-  }
+  },
+  "copy": "Copier"
 }

@@ -1,9 +1,10 @@
 <script lang="ts">
   import { t } from 'svelte-i18n';
-  
-  import {dataToRequestParam} from "$lib/GenerateUrl/dataToRequestParam.js";
-  import {dataParams, fetchTeamsGet, fetchTeamsIsLoading} from "$lib/GenerateUrl/store.js";
-  
+
+  import { dataToRequestParam } from '$lib/GenerateUrl/dataToRequestParam.js';
+  import { dataParams, fetchTeamsGet, fetchTeamsIsLoading } from '$lib/GenerateUrl/store.js';
+  import TwoTextComponent from '$lib/UI/TwoTextComponent.svelte';
+
   let usernameTranslation = $t('generateUrl.form.username');
   let passwordTranslation = $t('generateUrl.form.password');
   let teamIdTranslation = $t('generateUrl.form.teamId');
@@ -11,7 +12,7 @@
   let username = '';
   let password = '';
   let teamId = '';
-  
+
   let invalidUsername: boolean | null = null;
   let invalidPassword: boolean | null = null;
 
@@ -19,19 +20,22 @@
     invalidUsername = username === '';
     invalidPassword = password === '';
   }
-  
+
   function listTeams() {
     if (username !== '' && password !== '') fetchTeamsGet(username, password);
-    
+
     clicked();
   }
+
+  let twoText: TwoTextComponent;
 
   function generateUrl() {
     if (username !== '' && password !== '') {
       const data = dataToRequestParam(username, password, teamId);
       dataParams.set(data);
+      twoText.animate();
     }
-    
+
     clicked();
   }
 
@@ -97,12 +101,18 @@
   <footer>
     <div class="grid">
       <div />
-      <button class="secondary outline reset" on:click={reset}>{$t('generateUrl.form.buttonReset')}</button>
+      <button class="secondary outline reset" on:click={reset}
+        >{$t('generateUrl.form.buttonReset')}</button
+      >
       <button class="secondary list-teams" on:click={listTeams} aria-busy={$fetchTeamsIsLoading}>
         {$t('generateUrl.form.buttonListTeams')}
       </button>
       <button class="generate" on:click={generateUrl}>
-        {$t('generateUrl.form.buttonGenerate')}
+        <TwoTextComponent
+          bind:this={twoText}
+          originalText={$t('generateUrl.form.buttonGenerate')}
+          otherText="✓"
+        />
       </button>
       <div />
     </div>
