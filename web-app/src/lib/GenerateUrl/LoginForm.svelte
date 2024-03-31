@@ -108,3 +108,15 @@
     </div>
   </footer>
 </article>
+
+<style>
+  header {
+    color: white;
+    background-color: var(--primary-background);
+  }
+
+  footer button.generate {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+  }
+</style>

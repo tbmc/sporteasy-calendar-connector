@@ -18,3 +18,10 @@
     </div>
   </article>
 {/if}
+
+<style>
+  header {
+    color: white;
+    background-color: var(--primary-background);
+  }
+</style>
