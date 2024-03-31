@@ -209,7 +209,9 @@ class CalendarConverter:
         cal.add("method", "PUBLISH")
         cal.add("x-wr-calname", "SportEasy Calendar")
         cal.add("x-wr-timezone", "Europe/Paris")
-        cal.add("x-wr-caldesc", "SportEasy calendar as ics")
+
+        formatted_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        cal.add("x-wr-caldesc", f"SportEasy Calendar | Last sync: {formatted_time}")
         cal.add("REFRESH-INTERVAL;VALUE=DURATION", "PT8H")
         cal.add("X-PUBLISHED-TTL", "PT8H")
 
