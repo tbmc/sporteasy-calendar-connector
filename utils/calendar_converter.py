@@ -56,6 +56,8 @@ def _extract_event_summary(event_data: EVENT_TYPE, event: Event, team_name: str)
         summary = f"{team_name} - {name}"
     else:
         summary = name
+    if "is_cancelled" in event_data and event_data["is_cancelled"]:
+        summary = f"CANCELLED | {summary}"
 
     # opponent_right = cast(dict[str, int | str | None] | None, event_data["opponent_right"])
     # opponent_left = cast(dict[str, int | str | None] | None, event_data["opponent_left"])
