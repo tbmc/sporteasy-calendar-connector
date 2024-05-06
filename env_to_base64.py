@@ -24,9 +24,7 @@ data_64 = base64.b64encode(data_str.encode("utf-8"))
 
 data_b64 = data_64.decode("utf-8")
 
-encoded_data = urllib.parse.urlencode({
-    "data": data_b64
-})
+encoded_data = urllib.parse.urlencode({"data": data_b64})
 
 print(f'Data: "{encoded_data}"\n')
 print("Default URL:")

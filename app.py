@@ -8,14 +8,15 @@ from flask import send_from_directory
 from utils.calendar_converter import CalendarConverter
 from utils.data_decoder import decode_data
 
-logging.basicConfig(format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", datefmt="%Y-%m-%d %H:%M:%S",
-                    level=logging.INFO)
+logging.basicConfig(
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+    level=logging.INFO,
+)
 
 app = flask.Flask(__name__)
 
-CORS_HEADERS = {
-    'Access-Control-Allow-Origin': '*'
-}
+CORS_HEADERS = {"Access-Control-Allow-Origin": "*"}
 
 
 def _list_teams_response() -> str:
@@ -36,17 +37,15 @@ def request_handler() -> flask.Response:
 
     return flask.Response(
         calendar_text,
-        headers={
-            "Content-Type": "text/calendar; charset=utf-8"
-        },
+        headers={"Content-Type": "text/calendar; charset=utf-8"},
         mimetype="text/calendar",
     )
 
 
 @app.route("/api/list-teams")
 def list_teams() -> flask.Response:
-    if flask.request.method == 'OPTIONS':
-        return flask.Response('', headers=CORS_HEADERS)
+    if flask.request.method == "OPTIONS":
+        return flask.Response("", headers=CORS_HEADERS)
     try:
         return flask.Response(_list_teams_response(), headers=CORS_HEADERS)
     except Exception as e:
@@ -68,7 +67,7 @@ def serve_static_index() -> flask.Response:
     data = flask.request.args.get("data", None)
     if data is not None:
         # Redirect user to /api if data is passed to keep compatibility
-        redirect_route = flask.url_for('main_request_api_handler')
+        redirect_route = flask.url_for("main_request_api_handler")
         redirect_url = f"{redirect_route}?data={data}"
         return flask.redirect(redirect_url)
 
