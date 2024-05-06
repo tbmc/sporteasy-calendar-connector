@@ -2,7 +2,7 @@ import json
 import base64
 from unittest import mock
 
-from .data_decoder import decode_data
+from utils.data_decoder import decode_data
 
 
 class __UtilArgsData:
@@ -13,11 +13,15 @@ class __UtilArgsData:
 
 
 def test_decode_data_flask_data() -> None:
-    data = base64.b64encode(json.dumps({
-        "username": "flask_username",
-        "password": "flask_password",
-        "team_id": "flask_team_id"
-    }).encode("utf-8")).decode("utf-8")
+    data = base64.b64encode(
+        json.dumps(
+            {
+                "username": "flask_username",
+                "password": "flask_password",
+                "team_id": "flask_team_id",
+            }
+        ).encode("utf-8")
+    ).decode("utf-8")
 
     util_args = __UtilArgsData()
     util_args.args = {"data": data}
@@ -53,8 +57,10 @@ def test_decode_data_env() -> None:
         "password": "env_password",
         "team_id": "env_team_id",
     }
-    with (mock.patch("flask.request", util_args),
-          mock.patch("utils.data_decoder.env", env)):
+    with (
+        mock.patch("flask.request", util_args),
+        mock.patch("utils.data_decoder.env", env),
+    ):
         username, password, team_id = decode_data()
 
     assert username == "env_username"

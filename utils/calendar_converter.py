@@ -5,10 +5,17 @@ from typing import Any, cast, Literal
 import requests
 from icalendar import Calendar, Event, vText
 
-from utils.consts import EVENT_TYPE, TIMEZONE, MY_PRESENCE, ORDER_PRESENT, url_authenticate, url_list_teams, \
-    url_list_events
+from utils.consts import (
+    EVENT_TYPE,
+    TIMEZONE,
+    MY_PRESENCE,
+    ORDER_PRESENT,
+    url_authenticate,
+    url_list_teams,
+    url_list_events,
+)
 from utils.env import load_env_data
-from utils.utils import normalize
+from utils.normalize import normalize
 
 
 def _extract_event_dates(event_data: EVENT_TYPE, event: Event) -> None:
@@ -50,7 +57,9 @@ def _status_to_ics_status(sp_status: str) -> str:
     return sp_status
 
 
-def _extract_event_summary(event_data: EVENT_TYPE, event: Event, team_name: str) -> None:
+def _extract_event_summary(
+    event_data: EVENT_TYPE, event: Event, team_name: str
+) -> None:
     name = normalize(cast(str, event_data["name"]))
     if team_name not in name:
         summary = f"{team_name} - {name}"
@@ -83,29 +92,36 @@ def _extract_event_summary(event_data: EVENT_TYPE, event: Event, team_name: str)
 
 
 def _extract_attendee_description(event_data: EVENT_TYPE) -> str:
-    attendance_groups = cast(list[dict[str, int | str]] | None, event_data["attendance_groups"])
+    attendance_groups = cast(
+        list[dict[str, int | str]] | None, event_data["attendance_groups"]
+    )
     attendee = ""
     if attendance_groups is not None:
         attendance_group_list: list[tuple[int, str, int]] = []
         for ppc in attendance_groups:
             slug_sort_value = ORDER_PRESENT.get(cast(str, ppc["slug_name"]), 0)
-            attendance_group_list.append((
-                slug_sort_value,
-                cast(str, ppc["localized_name"]),
-                cast(int, ppc["count"])
-            ))
+            attendance_group_list.append(
+                (
+                    slug_sort_value,
+                    cast(str, ppc["localized_name"]),
+                    cast(int, ppc["count"]),
+                )
+            )
         attendance_group_list.sort(reverse=True)
 
-        attendee = ", ".join([
-            f"{localized_name}: {count}"
-            for _, localized_name, count in attendance_group_list
-        ])
+        attendee = ", ".join(
+            [
+                f"{localized_name}: {count}"
+                for _, localized_name, count in attendance_group_list
+            ]
+        )
 
     return attendee
 
 
-def _extract_scores_for_opponent(event_data: EVENT_TYPE, left_or_right: Literal["left", "right"]) \
-        -> tuple[str, int] | None:
+def _extract_scores_for_opponent(
+    event_data: EVENT_TYPE, left_or_right: Literal["left", "right"]
+) -> tuple[str, int] | None:
     opponent = event_data.get(f"opponent_{left_or_right}")
     if opponent is None:
         return None
@@ -158,10 +174,7 @@ def event_to_calendar_event(team_name: str, event_data: EVENT_TYPE) -> Event:
     event.add("last-modified", datetime(2020, 1, 1, 1, 1, 1))
 
     category_name = normalize(
-        cast(
-            dict[str, str | Any],
-            event_data["category"]
-        )["localized_name"]
+        cast(dict[str, str | Any], event_data["category"])["localized_name"]
     )
 
     return event
@@ -172,10 +185,13 @@ class CalendarConverter:
         self.session_requests = requests.Session()
 
     def login(self, username: str, password: str) -> str:
-        authenticate_response = self.session_requests.post(url_authenticate, {
-            "username": username,
-            "password": password,
-        })
+        authenticate_response = self.session_requests.post(
+            url_authenticate,
+            {
+                "username": username,
+                "password": password,
+            },
+        )
         if authenticate_response.status_code != 200:
             raise Exception("Authentication error")
         token: str = authenticate_response.cookies.get("sporteasy")
@@ -185,20 +201,19 @@ class CalendarConverter:
     def list_teams(self) -> list[tuple[int, str]]:
         response = self.session_requests.get(url_list_teams)
         data = response.json()
-        return [
-            (d["id"], normalize(d["name"]))
-            for d in data["results"]
-        ]
+        return [(d["id"], normalize(d["name"])) for d in data["results"]]
 
     def list_events(self, team_id: int) -> list[EVENT_TYPE]:
         response = self.session_requests.get(
             url_list_events.format(team_id=team_id),
-            headers={"Accept-Language": "fr-FR"}
+            headers={"Accept-Language": "fr-FR"},
         )
         data: list[EVENT_TYPE] = response.json()["results"]
         return data
 
-    def get_calendar_text(self, username: str, password: str, team_id: str | None = None) -> str:
+    def get_calendar_text(
+        self, username: str, password: str, team_id: str | None = None
+    ) -> str:
         self.login(username, password)
         teams = self.list_teams()
 
@@ -219,18 +234,17 @@ class CalendarConverter:
 
         for current_team_id, team_name in teams:
             # Ignore other teams
-            if team_id is not None and team_id != "" and int(team_id) != current_team_id:
+            if (
+                team_id is not None
+                and team_id != ""
+                and int(team_id) != current_team_id
+            ):
                 continue
             events = self.list_events(current_team_id)
             for event in events:
-                cal.add_component(
-                    event_to_calendar_event(team_name, event)
-                )
+                cal.add_component(event_to_calendar_event(team_name, event))
 
-        text_calendar: str = cal \
-            .to_ical() \
-            .decode("utf-8") \
-            .strip()
+        text_calendar: str = cal.to_ical().decode("utf-8").strip()
 
         return text_calendar
 

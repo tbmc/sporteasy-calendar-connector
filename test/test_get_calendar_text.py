@@ -1,6 +1,6 @@
 import requests_mock
 
-from test.utils import (
+from .test_utils import (
     read_text_by_name,
     replace_unwanted_lines,
     replace_last_sync_and_sequence,

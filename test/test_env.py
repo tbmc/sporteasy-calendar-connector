@@ -1,6 +1,6 @@
 from unittest import mock
 
-from .env import load_env_data
+from utils.env import load_env_data
 
 
 def test_env() -> None:

@@ -3,7 +3,23 @@ import json
 from pathlib import Path
 from typing import Any
 
+import pytest
+
+from utils.normalize import normalize
+
 data_folder = Path(__file__).parent / "data"
+
+
+@pytest.mark.parametrize(
+    "test_input,expected",
+    [
+        ("J'aimerais ça. Du pâté !", "J'aimerais ca. Du pate !"),
+        ("phrase normale", "phrase normale"),
+    ],
+)
+def test_normalize(test_input, expected) -> None:
+    result = normalize(test_input)
+    assert expected == result
 
 
 def read_text_by_name(filename: str) -> str:

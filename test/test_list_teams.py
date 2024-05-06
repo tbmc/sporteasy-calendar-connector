@@ -1,6 +1,6 @@
 import requests_mock
 
-from test.utils import read_text_by_name
+from test.test_utils import read_text_by_name
 from utils.calendar_converter import CalendarConverter
 from utils.consts import url_list_teams
 
