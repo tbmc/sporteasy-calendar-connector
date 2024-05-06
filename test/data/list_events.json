@@ -1,0 +1,150 @@
+{
+  "_links": {},
+  "count": 55,
+  "results": [
+    {
+      "id": 1,
+      "category": {
+        "id": 505359,
+        "type": "tournament",
+        "slug_name": "tournament",
+        "localized_name": "Tournoi"
+      },
+      "season": {
+        "id": 1,
+        "slug_name": "2023-2024",
+        "name": "2023-2024",
+        "start_date": "2023-08-01",
+        "end_date": "2024-07-31",
+        "current": true,
+        "archived": false,
+        "_links": {}
+      },
+      "start_at": "2024-01-23T09:00:00+02:00",
+      "end_at": "2024-01-23T18:00:00+02:00",
+      "is_cancelled": false,
+      "location": {
+        "id": 1,
+        "formatted_address": "rue de la Paix, 75000 Paris, France",
+        "lat": 1,
+        "lng": 1,
+        "country": {
+          "iso2": "FR",
+          "name": "France"
+        },
+        "name": "Gymnase",
+        "is_stadium": true
+      },
+      "opponent_left": null,
+      "opponent_right": null,
+      "is_sportive": true,
+      "is_date_unknown": false,
+      "is_past": false,
+      "registration_open_at": "2024-01-20T20:25:35+01:00",
+      "step": "registration_opened",
+      "attendance_groups": [
+        {
+          "slug_name": "available",
+          "localized_name": "Présents",
+          "attendance_status": "present",
+          "count": 8,
+          "importance_level": 1
+        },
+        {
+          "slug_name": "rsvp",
+          "localized_name": "En attente",
+          "attendance_status": null,
+          "count": 7,
+          "importance_level": 1
+        },
+        {
+          "slug_name": "not_selected",
+          "localized_name": "Non retenu",
+          "attendance_status": "absent",
+          "count": 0,
+          "importance_level": 2
+        },
+        {
+          "slug_name": "unavailable",
+          "localized_name": "Absents",
+          "attendance_status": "absent",
+          "count": 2,
+          "importance_level": 1
+        }
+      ],
+      "available_threshold_reached": true,
+      "thread_id": 1,
+      "me": {
+        "group": {
+          "slug_name": "rsvp",
+          "localized_name": "En attente",
+          "attendance_status": null,
+          "importance_level": 1,
+          "target_groups": [
+            "available",
+            "not_selected",
+            "unavailable"
+          ]
+        },
+        "opponent": null
+      },
+      "name": "Tournoi 1",
+      "can_see_attendance": true,
+      "registration_parameters": {
+        "hide_attendance": false
+      },
+      "_links": {}
+    },
+    {
+      "id": 2,
+      "category": {
+        "id": 505360,
+        "type": "training",
+        "slug_name": "training",
+        "localized_name": "Entraînement"
+      },
+      "season": {
+        "id": 1442088,
+        "slug_name": "2023-2024",
+        "name": "2023-2024",
+        "start_date": "2023-08-01",
+        "end_date": "2024-07-31",
+        "current": true,
+        "archived": false,
+        "_links": {}
+      },
+      "start_at": "2024-01-26T20:00:00+02:00",
+      "end_at": null,
+      "is_cancelled": false,
+      "location": {
+        "id": 1,
+        "formatted_address": "rue de la Paix, 75000 Paris, France",
+        "lat": 1,
+        "lng": 1,
+        "country": {
+          "iso2": "FR",
+          "name": "France"
+        },
+        "name": "Gymnase",
+        "is_stadium": true
+      },
+      "opponent_left": null,
+      "opponent_right": null,
+      "is_sportive": true,
+      "is_date_unknown": false,
+      "is_past": false,
+      "registration_open_at": "2024-01-19T20:00:00+02:00",
+      "step": "before_registration",
+      "attendance_groups": null,
+      "available_threshold_reached": false,
+      "thread_id": 18034012,
+      "me": null,
+      "name": "Entraînement 2",
+      "can_see_attendance": true,
+      "registration_parameters": {
+        "hide_attendance": false
+      },
+      "_links": {}
+    }
+  ]
+}

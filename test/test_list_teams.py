@@ -6,7 +6,7 @@ from utils.consts import url_list_teams
 
 
 def test_list_teams() -> None:
-    mocked_response = read_text_by_name('list_teams')
+    mocked_response = read_text_by_name("list_teams.json")
     with requests_mock.Mocker() as m:
         m.get(url_list_teams, text=mocked_response)
 
