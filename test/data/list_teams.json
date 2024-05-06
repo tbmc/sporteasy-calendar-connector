@@ -1,0 +1,187 @@
+{
+  "_links": {},
+  "count": 2,
+  "results": [
+    {
+      "id": 1,
+      "full_name": "Equipe 1",
+      "slug_name": "equipe-1",
+      "short_name": "Equipe 1",
+      "name": "Equipe 1",
+      "country": {
+        "iso2": "FR",
+        "name": "France"
+      },
+      "location": null,
+      "timezone": "Europe/Paris",
+      "year_of_creation": null,
+      "motto": "",
+      "member_roles": [
+        {
+          "count": 1,
+          "role": {
+            "slug_name": "role_player_coach",
+            "localized_name": "Joueur-coach"
+          }
+        },
+        {
+          "count": 15,
+          "role": {
+            "slug_name": "role_player",
+            "localized_name": "Joueur"
+          }
+        },
+        {
+          "count": 20,
+          "role": {
+            "slug_name": "role_casual_player",
+            "localized_name": "Joueur occasionnel"
+          }
+        }
+      ],
+      "sport": {
+        "slug_name": "handball",
+        "localized_name": "Handball",
+        "icon_url": "https://d2v0q8lofatysb.cloudfront.net/static/2.836.000/images/sport/icons/handball.png",
+        "is_generic": false
+      },
+      "format": {
+        "nb_players": 7,
+        "sport_slug_name": "handball",
+        "localized_name": "7 contre 7"
+      },
+      "gender": "b",
+      "age_range": "all",
+      "age_category": {
+        "is_youth": false,
+        "age_range": "all",
+        "localized_age_range": "Adultes tous âges"
+      },
+      "practice_level": "leisure",
+      "team_group_type": "association",
+      "cover": {
+        "640x414": "https://d2v0q8lofatysb.cloudfront.net/static/2.836.000/themes/v1/images/common/default/team_cover/640x414.jpg",
+        "170x110": "https://d2v0q8lofatysb.cloudfront.net/static/2.836.000/themes/v1/images/common/default/team_cover/170x110.jpg"
+      },
+      "club": {
+        "id": 1,
+        "name": "Handball 1"
+      },
+      "sponsor": null,
+      "sponsor_information": null,
+      "_links": {},
+      "default_stadium": {
+        "id": 1,
+        "name": "Stade 1",
+        "formatted_address": "rue de la Paix",
+        "lat": 0,
+        "lng": 0,
+        "country": {
+          "iso2": "FR",
+          "name": "France"
+        },
+        "is_stadium": true
+      },
+      "is_impersonated": false,
+      "current_season": {
+        "id": 1,
+        "name": "2023-2024",
+        "current": null
+      },
+      "has_deal_advertising": true,
+      "total_unread_comments": 0,
+      "onboarding_info": null
+    },
+    {
+      "id": 2,
+      "full_name": "Equipe 2",
+      "slug_name": "equipe-2",
+      "short_name": "Equipe 2",
+      "name": "Equipe 2",
+      "country": {
+        "iso2": "FR",
+        "name": "France"
+      },
+      "location": null,
+      "logo": {
+        "168x168": "https://d2s8h3l2v58zr0.cloudfront.net/media/image/site_logo/168x168/b52fd5441bf436f7dad84be54081107e/c71ab704c90f431391fdc692d5177290.png",
+        "98x70": "https://d2s8h3l2v58zr0.cloudfront.net/media/image/site_logo/98x70/b52fd5441bf436f7dad84be54081107e/c71ab704c90f431391fdc692d5177290.png",
+        "54x54": "https://d2s8h3l2v58zr0.cloudfront.net/media/image/site_logo/54x54/b52fd5441bf436f7dad84be54081107e/c71ab704c90f431391fdc692d5177290.png"
+      },
+      "timezone": "Europe/Paris",
+      "year_of_creation": null,
+      "motto": null,
+      "member_roles": [
+        {
+          "count": 1,
+          "role": {
+            "slug_name": "role_coach",
+            "localized_name": "Coach"
+          }
+        },
+        {
+          "count": 2,
+          "role": {
+            "slug_name": "role_player_coach",
+            "localized_name": "Joueur-coach"
+          }
+        },
+        {
+          "count": 15,
+          "role": {
+            "slug_name": "role_player",
+            "localized_name": "Joueur"
+          }
+        },
+        {
+          "count": 16,
+          "role": {
+            "slug_name": "role_casual_player",
+            "localized_name": "Joueur occasionnel"
+          }
+        }
+      ],
+      "sport": {
+        "slug_name": "handball",
+        "localized_name": "Handball",
+        "icon_url": "https://d2v0q8lofatysb.cloudfront.net/static/2.836.000/images/sport/icons/handball.png",
+        "is_generic": false
+      },
+      "format": {
+        "nb_players": 7,
+        "sport_slug_name": "handball",
+        "localized_name": "7 contre 7"
+      },
+      "gender": "b",
+      "age_range": "all",
+      "age_category": {
+        "is_youth": false,
+        "age_range": "all",
+        "localized_age_range": "Adultes tous âges"
+      },
+      "practice_level": "leisure",
+      "team_group_type": null,
+      "cover": {
+        "640x414": "https://d2v0q8lofatysb.cloudfront.net/static/2.836.000/themes/v1/images/common/default/team_cover/640x414.jpg",
+        "170x110": "https://d2v0q8lofatysb.cloudfront.net/static/2.836.000/themes/v1/images/common/default/team_cover/170x110.jpg"
+      },
+      "club": {
+        "id": 2,
+        "name": "Handball 2"
+      },
+      "sponsor": null,
+      "sponsor_information": null,
+      "_links": {},
+      "default_stadium": null,
+      "is_impersonated": false,
+      "current_season": {
+        "id": 1,
+        "name": "2023-2024",
+        "current": null
+      },
+      "has_deal_advertising": true,
+      "total_unread_comments": 1,
+      "onboarding_info": null
+    }
+  ]
+}
