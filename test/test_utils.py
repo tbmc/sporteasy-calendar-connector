@@ -1,4 +1,3 @@
-import re
 import json
 from pathlib import Path
 from typing import Any
@@ -41,13 +40,3 @@ def read_json(path: Path) -> Any:
 
 def replace_unwanted_lines(text: str) -> str:
     return text.replace("\r\n", "\n").replace("\n\n", "\n").strip()
-
-
-_SEQUENCE_REGEX = r"(?<=SEQUENCE:)\d+"
-_LAST_SYNC_REGEX = r"(?<=\| Last sync: )\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}"
-
-
-def replace_last_sync_and_sequence(text: str) -> str:
-    text_sequence = re.sub(_SEQUENCE_REGEX, "173512350", text)
-    text_date = re.sub(_LAST_SYNC_REGEX, "2024-12-25 10:45:00", text_sequence)
-    return text_date

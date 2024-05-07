@@ -1,4 +1,3 @@
-import time
 from datetime import datetime, timedelta
 from typing import Any, cast, Literal
 
@@ -14,6 +13,8 @@ from utils.consts import (
     url_list_teams,
     url_list_events,
 )
+
+from utils.datetime_utils import get_current_timestamp, get_current_datetime
 from utils.env import load_env_data
 from utils.normalize import normalize
 
@@ -165,7 +166,7 @@ def event_to_calendar_event(team_name: str, event_data: EVENT_TYPE) -> Event:
     _extract_event_description(event_data, event)
 
     event.add("class", "PUBLIC")
-    current_timestamp = int(time.time() / 10)
+    current_timestamp = get_current_timestamp()
     event.add("sequence", current_timestamp)
     event.add("transp", "OPAQUE")
 
@@ -227,7 +228,7 @@ class CalendarConverter:
         cal.add("x-wr-calname", "SportEasy Calendar")
         cal.add("x-wr-timezone", "Europe/Paris")
 
-        formatted_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        formatted_time = get_current_datetime().strftime("%Y-%m-%d %H:%M:%S")
         cal.add("x-wr-caldesc", f"SportEasy Calendar | Last sync: {formatted_time}")
         cal.add("REFRESH-INTERVAL;VALUE=DURATION", "PT8H")
         cal.add("X-PUBLISHED-TTL", "PT8H")

@@ -10,7 +10,6 @@ on:
 
 jobs:
   build_and_publish_image:
-    
     permissions:
       contents: read
       packages: write
