@@ -161,3 +161,6 @@ cython_debug/
 *.ics
 
 data_*.txt
+
+test/
+docs/
