@@ -5,8 +5,8 @@ import logging
 
 import flask
 from flask import send_from_directory
-from utils.calendar_converter import CalendarConverter
-from utils.data_decoder import decode_data
+from calendar_connector.calendar_converter import CalendarConverter
+from calendar_connector.data_decoder import decode_data
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",

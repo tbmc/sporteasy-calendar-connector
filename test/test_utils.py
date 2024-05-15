@@ -4,7 +4,7 @@ from typing import Any
 
 import pytest
 
-from utils.normalize import normalize
+from calendar_connector.normalize import normalize
 
 data_folder = Path(__file__).parent / "data"
 

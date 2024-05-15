@@ -1,7 +1,7 @@
 import requests_mock
 
-from utils.calendar_converter import CalendarConverter
-from utils.consts import url_authenticate
+from calendar_connector.calendar_converter import CalendarConverter
+from calendar_connector.consts import url_authenticate
 
 
 def test_login() -> None:

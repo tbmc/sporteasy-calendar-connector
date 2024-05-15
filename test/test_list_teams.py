@@ -1,8 +1,8 @@
 import requests_mock
 
 from test.test_utils import read_text_by_name
-from utils.calendar_converter import CalendarConverter
-from utils.consts import url_list_teams
+from calendar_connector.calendar_converter import CalendarConverter
+from calendar_connector.consts import url_list_teams
 
 
 def test_list_teams() -> None:

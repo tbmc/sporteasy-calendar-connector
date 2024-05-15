@@ -2,7 +2,7 @@ import json
 import base64
 from unittest import mock
 
-from utils.data_decoder import decode_data
+from calendar_connector.data_decoder import decode_data
 
 
 class __UtilArgsData:
@@ -59,7 +59,7 @@ def test_decode_data_env() -> None:
     }
     with (
         mock.patch("flask.request", util_args),
-        mock.patch("utils.data_decoder.env", env),
+        mock.patch("calendar_connector.data_decoder.env", env),
     ):
         username, password, team_id = decode_data()
 

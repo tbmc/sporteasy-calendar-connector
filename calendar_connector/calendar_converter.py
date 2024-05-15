@@ -4,7 +4,7 @@ from typing import Any, cast, Literal
 import requests
 from icalendar import Calendar, Event, vText
 
-from utils.consts import (
+from calendar_connector.consts import (
     EVENT_TYPE,
     TIMEZONE,
     MY_PRESENCE,
@@ -14,9 +14,12 @@ from utils.consts import (
     url_list_events,
 )
 
-from utils.datetime_utils import get_current_timestamp, get_current_datetime
-from utils.env import load_env_data
-from utils.normalize import normalize
+from calendar_connector.datetime_utils import (
+    get_current_timestamp,
+    get_current_datetime,
+)
+from calendar_connector.env import load_env_data
+from calendar_connector.normalize import normalize
 
 
 def _extract_event_dates(event_data: EVENT_TYPE, event: Event) -> None:
