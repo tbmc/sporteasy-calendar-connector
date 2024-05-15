@@ -8,8 +8,6 @@ from calendar_connector.event_convertor import event_to_calendar_event
 from calendar_connector.sporteasy_connector import SporteasyConnector
 
 
-
-
 class CalendarConverter:
     def __init__(self) -> None:
         self.connector = SporteasyConnector()
