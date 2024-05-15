@@ -16,7 +16,7 @@ data_folder = Path(__file__).parent / "data"
         ("phrase normale", "phrase normale"),
     ],
 )
-def test_normalize(test_input, expected) -> None:
+def test_normalize(test_input: str, expected: str) -> None:
     result = normalize(test_input)
     assert expected == result
 

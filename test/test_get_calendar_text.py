@@ -4,6 +4,7 @@ from unittest.mock import patch, MagicMock
 
 import requests_mock
 
+import calendar_connector.event_convertor
 import calendar_connector.calendar_converter
 from calendar_connector.consts import url_list_events, url_list_teams, url_authenticate
 from .test_utils import (
@@ -24,6 +25,7 @@ def test_get_calendar_text(
     datetime_mock: MagicMock,
 ) -> None:
     importlib.reload(calendar_connector.calendar_converter)
+    importlib.reload(calendar_connector.event_convertor)
 
     mocked_response_teams = read_text_by_name("list_teams.json")
     mocked_response_events = read_text_by_name("list_events.json")

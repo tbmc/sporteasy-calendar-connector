@@ -1,11 +1,11 @@
 from calendar_connector.calendar_converter import CalendarConverter, load_env_data
-
+from calendar_connector.sporteasy_connector import SporteasyConnector
 
 username, password, _ = load_env_data()
-calendar_converter = CalendarConverter()
-calendar_converter.login(username, password)
+connector = SporteasyConnector()
+connector.login(username, password)
 
-teams = calendar_converter.list_teams()
+teams = connector.list_teams()
 
 team_list = [
     ("TEAM NAME", "TEAM ID"),

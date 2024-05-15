@@ -7,6 +7,7 @@ import flask
 from flask import send_from_directory
 from calendar_connector.calendar_converter import CalendarConverter
 from calendar_connector.data_decoder import decode_data
+from calendar_connector.sporteasy_connector import SporteasyConnector
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
@@ -21,9 +22,9 @@ CORS_HEADERS = {"Access-Control-Allow-Origin": "*"}
 
 def _list_teams_response() -> str:
     username, password, _ = decode_data()
-    calendar_converter = CalendarConverter()
-    calendar_converter.login(username, password)
-    teams = calendar_converter.list_teams()
+    connector = SporteasyConnector()
+    connector.login(username, password)
+    teams = connector.list_teams()
     return json.dumps(teams)
 
 
@@ -69,7 +70,7 @@ def serve_static_index() -> flask.Response:
         # Redirect user to /api if data is passed to keep compatibility
         redirect_route = flask.url_for("main_request_api_handler")
         redirect_url = f"{redirect_route}?data={data}"
-        return flask.redirect(redirect_url)
+        return flask.redirect(redirect_url)  # type: ignore
 
     return send_from_directory("web-app/build", "index.html")
 
