@@ -81,6 +81,6 @@ def extract_event_description(
         response_links = _generate_response_links(team_id, event_id, links_data)
         description += f"{response_links}\n"
 
-    description += f"\n\nLast sync: {get_formated_current_time()}\n"
+    description += f"\nLast sync: {get_formated_current_time()}\n"
 
     event.add("description", description.strip())
