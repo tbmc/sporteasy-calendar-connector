@@ -46,7 +46,7 @@ def test_get_calendar_text(
         )
 
         converter = calendar_connector.calendar_converter.CalendarConverter()
-        calendar_text = converter.get_calendar_text("username", "password", "1")
+        calendar_text = converter.get_calendar_text("username", "password", False, "1")
 
     result = replace_unwanted_lines(calendar_text)
     assert result == expected_calendar

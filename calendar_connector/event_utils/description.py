@@ -1,9 +1,21 @@
-from typing import cast
+import dataclasses
+from typing import cast, Optional
 
 from icalendar import Event
 
-from calendar_connector.consts import EVENT_TYPE, ORDER_PRESENT
+from calendar_connector.consts import EVENT_TYPE, ORDER_PRESENT, route_change_presence
+from calendar_connector.datetime_utils import get_formated_current_time
 from calendar_connector.event_utils.score import extract_scores
+from calendar_connector.cryptography import generate_hash
+
+
+@dataclasses.dataclass
+class GenerateLinksData:
+    user_id: int
+    username: str
+    password: str
+    salt: str
+    url_root: str
 
 
 def _extract_attendee_description(event_data: EVENT_TYPE) -> str:
@@ -34,12 +46,41 @@ def _extract_attendee_description(event_data: EVENT_TYPE) -> str:
     return attendee
 
 
-def extract_event_description(event_data: EVENT_TYPE, event: Event) -> None:
+def _generate_response_links(
+    team_id: int, event_id: int, data: GenerateLinksData
+) -> str:
+    hashed = generate_hash(
+        str(event_id), data.user_id, data.username, data.password, data.salt
+    )
+    url = (
+        f"{data.url_root}{route_change_presence[1:]}"
+        f"?team_id={team_id}&event_id={event_id}"
+        f"&user_id={data.user_id}&token={hashed}"
+    )
+    yes = f'<a href="{url}&presence=yes">YES</a>'
+    no = f'<a href="{url}&presence=no">NO</a>'
+
+    return f"{yes} | {no}"
+
+
+def extract_event_description(
+    team_id: int,
+    event_data: EVENT_TYPE,
+    event: Event,
+    links_data: Optional[GenerateLinksData],
+) -> None:
     description = ""
     score = extract_scores(event_data)
     if score is not None:
         description += f"{score}\n"
     attendee = _extract_attendee_description(event_data)
-    description += attendee
+    description += f"{attendee}\n"
+
+    if links_data:
+        event_id = cast(int, event_data["id"])
+        response_links = _generate_response_links(team_id, event_id, links_data)
+        description += f"{response_links}\n"
+
+    description += f"\n\nLast sync: {get_formated_current_time()}\n"
 
     event.add("description", description.strip())

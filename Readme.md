@@ -1,4 +1,4 @@
-[![Github Container Pulls](https://img.shields.io/badge/Github%20Container%20Pulls-960-blue
+[![Github Container Pulls](https://img.shields.io/badge/Github%20Container%20Pulls-1K-blue
 )](https://github.com/tbmc/sporteasy-calendar-connector/pkgs/container/sporteasy-calendar-connector)
 [![Docker Pulls](https://img.shields.io/docker/pulls/tbmc/sporteasy-calendar-connector)](https://hub.docker.com/r/tbmc/sporteasy-calendar-connector)
 
@@ -71,10 +71,15 @@ You can use mine, but at your own risk.
 :warning: Data in base64 are not ciphered.
 
 ``
-https://sporteasy-calendar-connector.tbmc.ovh?data={base64Data}
+https://sporteasy-calendar-connector.tbmc.ovh/api?data={base64Data}
+``
+
+You can add a parameter `disable_save_login` to disable saving of logins and password, but it deactivates links in event description to set present or absent. Without saving logins, it can not connect to SportEasy servers.
+
+``
+https://sporteasy-calendar-connector.tbmc.ovh/api?data={base64Data}&disable_save_login=True
 ``
 
 ## Info
 
 SportEasy block IPs from server providers, so you should have a domestic IP.
-

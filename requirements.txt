@@ -9,3 +9,5 @@ pytz==2023.3
 types-pytz==2023.3.0.0
 Flask==2.3.2
 gunicorn==20.1.0
+peewee==3.17.5
+mypy==1.10.0

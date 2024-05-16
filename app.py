@@ -5,9 +5,15 @@ import logging
 
 import flask
 from flask import send_from_directory
+from werkzeug.exceptions import BadRequestKeyError
+
 from calendar_connector.calendar_converter import CalendarConverter
+from calendar_connector.consts import route_change_presence
 from calendar_connector.data_decoder import decode_data
 from calendar_connector.sporteasy_connector import SporteasyConnector
+from calendar_connector.database.user import generate_links_data
+from calendar_connector.custom_exceptions import BadTokenException
+from calendar_connector.presence_updater import set_presence_to_event
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
@@ -33,14 +39,38 @@ def request_handler() -> flask.Response:
     ip = flask.request.remote_addr
     logging.info(f"New incoming request from {ip=} and {username=}")
 
+    url_root = flask.request.url_root
+    disable_save_login = flask.request.args.get("disable_save_login") is not None
     calendar_converter = CalendarConverter()
-    calendar_text = calendar_converter.get_calendar_text(username, password, team_id)
+    calendar_text = calendar_converter.get_calendar_text(
+        username, password, not disable_save_login, url_root, team_id
+    )
 
     return flask.Response(
         calendar_text,
         headers={"Content-Type": "text/calendar; charset=utf-8"},
         mimetype="text/calendar",
     )
+
+
+@app.route(route_change_presence)
+def change_my_presence() -> flask.Response:
+    try:
+        team_id = flask.request.args["team_id"]
+        event_id = flask.request.args["event_id"]
+        user_id = flask.request.args["user_id"]
+        token = flask.request.args["token"]
+        presence = flask.request.args["presence"].lower() == "yes"
+    except BadRequestKeyError as e:
+        return flask.Response("Parameter missing", status=500)
+
+    hash_token = generate_links_data(event_id, user_id)
+    if token != hash_token:
+        raise BadTokenException()
+
+    set_presence_to_event(int(team_id), int(event_id), int(user_id), presence)
+
+    return flask.send_file("calendar_connector/html/auto_close.html")
 
 
 @app.route("/api/list-teams")

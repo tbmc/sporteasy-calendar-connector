@@ -1,10 +1,14 @@
+from typing import Optional, cast
+
 from icalendar import Calendar, vText
 
+from calendar_connector.database.user import save_user
 from calendar_connector.datetime_utils import (
-    get_current_datetime,
+    get_formated_current_time,
 )
 from calendar_connector.env import load_env_data
 from calendar_connector.event_convertor import event_to_calendar_event
+from calendar_connector.event_utils.description import GenerateLinksData
 from calendar_connector.sporteasy_connector import SporteasyConnector
 
 
@@ -13,9 +17,26 @@ class CalendarConverter:
         self.connector = SporteasyConnector()
 
     def get_calendar_text(
-        self, username: str, password: str, team_id: str | None = None
+        self,
+        username: str,
+        password: str,
+        save_login: bool,
+        url_root: str,
+        team_id: Optional[str] = None,
     ) -> str:
         self.connector.login(username, password)
+
+        links_data: Optional[GenerateLinksData] = None
+        if save_login:
+            user = save_user(username, password)
+            links_data = GenerateLinksData(
+                cast(int, user.id),
+                cast(str, username),
+                cast(str, password),
+                cast(str, user.salt),
+                url_root,
+            )
+
         teams = self.connector.list_teams()
 
         cal = Calendar()
@@ -28,8 +49,10 @@ class CalendarConverter:
         cal.add("x-wr-calname", "SportEasy Calendar")
         cal.add("x-wr-timezone", "Europe/Paris")
 
-        formatted_time = get_current_datetime().strftime("%Y-%m-%d %H:%M:%S")
-        cal.add("x-wr-caldesc", f"SportEasy Calendar | Last sync: {formatted_time}")
+        cal.add(
+            "x-wr-caldesc",
+            f"SportEasy Calendar | Last sync: {get_formated_current_time()}",
+        )
         cal.add("REFRESH-INTERVAL;VALUE=DURATION", "PT8H")
         cal.add("X-PUBLISHED-TTL", "PT8H")
 
@@ -43,7 +66,11 @@ class CalendarConverter:
                 continue
             events = self.connector.list_events(current_team_id)
             for event in events:
-                cal.add_component(event_to_calendar_event(team_name, event))
+                cal.add_component(
+                    event_to_calendar_event(
+                        current_team_id, team_name, event, links_data
+                    )
+                )
 
         text_calendar: str = cal.to_ical().decode("utf-8").strip()
 
@@ -54,7 +81,9 @@ def main() -> None:
     username, password, team_id = load_env_data()
 
     calendar_converter = CalendarConverter()
-    calendar_content = calendar_converter.get_calendar_text(username, password, team_id)
+    calendar_content = calendar_converter.get_calendar_text(
+        username, password, False, "http://localhost:5000/", team_id
+    )
     with open("./test.ics", "w", encoding="utf-8") as f:
         f.write(calendar_content)
 
