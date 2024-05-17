@@ -10,15 +10,7 @@ export const fetchTeamsData = writable([]);
 export const fetchTeamsLoadedOnce = writable(false);
 
 export function getOrigin() {
-  let origin = '';
-
-  if (dev) {
-    origin = 'http://localhost:5000';
-  } else {
-    origin = browser ? window.location.origin : '';
-  }
-  
-  return `${origin}/api`;
+  return dev ? 'http://localhost:5000' : browser ? window.location.origin : '';
 }
 
 export async function fetchTeamsGet(username: string, password: string) {

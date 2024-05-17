@@ -3,9 +3,10 @@
 
   import { dataParamsStore, disableSaveLoginStore, getOrigin } from './store.js';
   import TwoTextComponent from '$lib/UI/TwoTextComponent.svelte';
+  import ColoredUrl from '$lib/GenerateUrl/ColoredUrl.svelte';
 
   const origin = getOrigin();
-  $: url = `${origin}?${$disableSaveLoginStore ? 'disable_save_login=true&' : ''}data=${$dataParamsStore}`;
+  $: url = `${origin}/api?${$disableSaveLoginStore ? 'disable_save_login=true&' : ''}data=${$dataParamsStore}`;
 
   let twoText: TwoTextComponent;
 
@@ -23,7 +24,13 @@
 
     <div class="custom-container">
       <code>
-        <a href={url}>{url}</a>
+        <a href={url}>
+          <ColoredUrl
+            origin={origin}
+            disableSaveLogin={$disableSaveLoginStore}
+            data={$dataParamsStore}
+          />
+        </a>
       </code>
       <div class="sub-container">
         <button on:click={onCopyClick}>
