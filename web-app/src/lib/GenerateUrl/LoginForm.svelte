@@ -44,6 +44,10 @@
       dataParamsStore.set(data);
       disableSaveLoginStore.set(disableSaveLogin);
       twoText.animate();
+
+      setTimeout(() => {
+        window.scrollTo(0, document.body.scrollHeight);
+      }, 500);
     }
 
     clicked();
