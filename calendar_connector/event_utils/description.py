@@ -3,7 +3,12 @@ from typing import cast, Optional
 
 from icalendar import Event
 
-from calendar_connector.consts import EVENT_TYPE, ORDER_PRESENT, route_change_presence
+from calendar_connector.consts import (
+    EVENT_TYPE,
+    ORDER_PRESENT,
+    route_change_presence,
+    PRESENCE,
+)
 from calendar_connector.datetime_utils import get_formated_current_time
 from calendar_connector.event_utils.score import extract_scores
 from calendar_connector.cryptography import generate_hash
@@ -49,18 +54,34 @@ def _extract_attendee_description(event_data: EVENT_TYPE) -> str:
 def _generate_response_links(
     team_id: int, event_id: int, data: GenerateLinksData
 ) -> str:
-    hashed = generate_hash(
-        str(event_id), data.user_id, data.username, data.password, data.salt
+    hashed_present = generate_hash(
+        team_id,
+        event_id,
+        data.user_id,
+        data.username,
+        data.password,
+        data.salt,
+        True,
+    )
+    hashed_absent = generate_hash(
+        team_id,
+        event_id,
+        data.user_id,
+        data.username,
+        data.password,
+        data.salt,
+        False,
     )
     url = (
         f"{data.url_root}{route_change_presence[1:]}"
-        f"?team_id={team_id}&event_id={event_id}"
-        f"&user_id={data.user_id}&token={hashed}"
+        f"?team_id={team_id}&event_id={event_id}&user_id={data.user_id}"
     )
-    yes = f'<a href="{url}&presence=yes">YES</a>'
-    no = f'<a href="{url}&presence=no">NO</a>'
+    present = f'<a href="{url}&token={hashed_present}&presence={PRESENCE.present}">Present</a>'
+    absent = (
+        f'<a href="{url}&token={hashed_absent}&presence={PRESENCE.absent}">Absent</a>'
+    )
 
-    return f"{yes} | {no}"
+    return f"{present} | {absent}"
 
 
 def extract_event_description(

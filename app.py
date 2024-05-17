@@ -8,7 +8,7 @@ from flask import send_from_directory
 from werkzeug.exceptions import BadRequestKeyError
 
 from calendar_connector.calendar_converter import CalendarConverter
-from calendar_connector.consts import route_change_presence
+from calendar_connector.consts import route_change_presence, PRESENCE
 from calendar_connector.data_decoder import decode_data
 from calendar_connector.sporteasy_connector import SporteasyConnector
 from calendar_connector.database.user import generate_links_data
@@ -60,11 +60,11 @@ def change_my_presence() -> flask.Response:
         event_id = flask.request.args["event_id"]
         user_id = flask.request.args["user_id"]
         token = flask.request.args["token"]
-        presence = flask.request.args["presence"].lower() == "yes"
+        presence = flask.request.args["presence"].lower() == PRESENCE.present
     except BadRequestKeyError as e:
         return flask.Response("Parameter missing", status=500)
 
-    hash_token = generate_links_data(event_id, user_id)
+    hash_token = generate_links_data(team_id, event_id, user_id, presence)
     if token != hash_token:
         raise BadTokenException()
 

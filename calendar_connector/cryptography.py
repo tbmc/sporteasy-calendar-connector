@@ -2,6 +2,8 @@ import string
 import random
 import hashlib
 
+from consts import PRESENCE
+
 _alphabet = string.printable
 
 
@@ -12,13 +14,18 @@ def generate_salt() -> str:
     return "".join(chars)
 
 
-def hash_string(s: str) -> str:
-    m = hashlib.sha3_256(s.encode("utf-8"))
-    return m.hexdigest()
-
-
 def generate_hash(
-    event_id: str, user_id: int | str, username: str, password: str, salt: str
+    team_id: int | str,
+    event_id: int | str,
+    user_id: int | str,
+    username: str,
+    password: str,
+    salt: str,
+    presence: bool,
 ) -> str:
-    hashed = hash_string(f"{event_id}:{user_id}:{username}:{password}:{salt}")
-    return hashed
+    presence_str = PRESENCE.present if presence else PRESENCE.absent
+    to_hash = (
+        f"{team_id}:{event_id}:{user_id}:{username}:{password}:{salt}:{presence_str}"
+    )
+    m = hashlib.sha3_256(to_hash.encode("utf-8"))
+    return m.hexdigest()
