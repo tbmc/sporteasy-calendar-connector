@@ -1,0 +1,53 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Sporteasy Calendar Connector
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+REFRESH-INTERVAL;VALUE=DURATION:PT8H
+SUMMARY:SportEasyCalendar
+VTIMEZONE:UTC
+X-PUBLISHED-TTL:PT8H
+X-WR-CALDESC:SportEasy Calendar | Last sync: 2024-12-25 10:45:00
+X-WR-CALNAME:SportEasy Calendar
+X-WR-TIMEZONE:Europe/Paris
+BEGIN:VEVENT
+SUMMARY:Equipe 1 - Tournoi 1 - En attente
+DTSTART:20240123T070000Z
+DTEND:20240123T160000Z
+DTSTAMP:20240123T070000Z
+UID:1@sporteasy.net
+SEQUENCE:173512350
+CLASS:PUBLIC
+CREATED:20200101T010101Z
+DESCRIPTION:Présents: 8\, En attente: 7\, Non retenu: 0\, Absents: 2\n<a 
+ href="http://localhost:5000/api/change_my_presence?team_id=1&event_id=1&us
+ er_id=2&token=d120bf5afba2cd0efe3bad87db2b349b44a2b4d8170c38d2169d863b4967
+ a103&presence=yes">Present</a> | <a href="http://localhost:5000/api/change
+ _my_presence?team_id=1&event_id=1&user_id=2&token=affc58a209c0d658156dbbd7
+ 0a18817174fc3157340bc70ba77be30a9af01b61&presence=no">Absent</a>\n\nLast s
+ ync: 2024-12-25 10:45:00
+LAST-MODIFIED:20200101T010101Z
+LOCATION:rue de la Paix\, 75000 Paris\, France
+STATUS:TENTATIVE
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Equipe 1 - Entrainement 2
+DTSTART:20240126T180000Z
+DTEND:20240126T200000Z
+DTSTAMP:20240126T180000Z
+UID:2@sporteasy.net
+SEQUENCE:173512350
+CLASS:PUBLIC
+CREATED:20200101T010101Z
+DESCRIPTION:<a href="http://localhost:5000/api/change_my_presence?team_id=
+ 1&event_id=2&user_id=2&token=e70ae1a5687d0c254c22d9e26ba5507667fa8c6fcd7da
+ 4d9b2726ac28e85f5bf&presence=yes">Present</a> | <a href="http://localhost:
+ 5000/api/change_my_presence?team_id=1&event_id=2&user_id=2&token=fa117c23c
+ 862e22187c409a995d5c8ed7a563cc486068b96eb5cdcabd73c5db2&presence=no">Absen
+ t</a>\n\nLast sync: 2024-12-25 10:45:00
+LAST-MODIFIED:20200101T010101Z
+LOCATION:rue de la Paix\, 75000 Paris\, France
+TRANSP:OPAQUE
+END:VEVENT
+END:VCALENDAR
