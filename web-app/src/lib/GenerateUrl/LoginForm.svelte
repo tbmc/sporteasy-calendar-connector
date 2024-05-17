@@ -9,6 +9,8 @@
     fetchTeamsIsLoading
   } from '$lib/GenerateUrl/store.js';
   import TwoTextComponent from '$lib/UI/TwoTextComponent.svelte';
+  import AlertWarning from '$lib/Components/AlertWarning.svelte';
+  import AlertInfo from '$lib/Components/AlertInfo.svelte';
 
   let usernameTranslation = $t('generateUrl.form.username');
   let passwordTranslation = $t('generateUrl.form.password');
@@ -40,7 +42,7 @@
     if (username !== '' && password !== '') {
       const data = dataToRequestParam(username, password, teamId);
       dataParamsStore.set(data);
-      disableSaveLoginStore.set(disableSaveLogin)
+      disableSaveLoginStore.set(disableSaveLogin);
       twoText.animate();
     }
 
@@ -64,10 +66,10 @@
   <div>
     <div>
       <!-- Warnings -->
-      <p>
+      <AlertWarning>
         <span style="font-size: 2em; color: red; font-family: sans-serif">⚠</span>
         {$t('generateUrl.warning.logins')}
-      </p>
+      </AlertWarning>
       <p>
         {$t('generateUrl.warning.repository')}
         <a href="https://github.com/tbmc/sporteasy-calendar-connector">Github repo</a>
@@ -88,7 +90,7 @@
           aria-invalid={invalidUsername}
         />
       </label>
-      
+
       <!-- Password -->
       <label for="password">
         {passwordTranslation}
@@ -102,13 +104,13 @@
           aria-invalid={invalidPassword}
         />
       </label>
-      
+
       <!-- Team id -->
       <label for="teamId">
         {teamIdTranslation}
         <input type="text" name="teamId" placeholder={teamIdTranslation} bind:value={teamId} />
       </label>
-      
+
       <!-- Disable save login -->
       <fieldset>
         <label>
@@ -120,9 +122,9 @@
           />
           {$t('generateUrl.form.disableSaveLogin')}
         </label>
-        <p>
+        <AlertInfo>
           {$t('generateUrl.form.disableSaveLoginExtra')}
-        </p>
+        </AlertInfo>
       </fieldset>
     </div>
   </div>
