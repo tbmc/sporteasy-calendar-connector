@@ -2,7 +2,8 @@ import { writable } from 'svelte/store';
 import { dataToRequestParam } from './dataToRequestParam';
 import { browser, dev } from '$app/environment';
 
-export const dataParams = writable('');
+export const dataParamsStore = writable('');
+export const disableSaveLoginStore = writable(false);
 
 export const fetchTeamsIsLoading = writable(false);
 export const fetchTeamsData = writable([]);

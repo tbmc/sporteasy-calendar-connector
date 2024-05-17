@@ -2,7 +2,12 @@
   import { t } from 'svelte-i18n';
 
   import { dataToRequestParam } from '$lib/GenerateUrl/dataToRequestParam.js';
-  import { dataParams, fetchTeamsGet, fetchTeamsIsLoading } from '$lib/GenerateUrl/store.js';
+  import {
+    dataParamsStore,
+    disableSaveLoginStore,
+    fetchTeamsGet,
+    fetchTeamsIsLoading
+  } from '$lib/GenerateUrl/store.js';
   import TwoTextComponent from '$lib/UI/TwoTextComponent.svelte';
 
   let usernameTranslation = $t('generateUrl.form.username');
@@ -15,6 +20,8 @@
 
   let invalidUsername: boolean | null = null;
   let invalidPassword: boolean | null = null;
+
+  let disableSaveLogin = false;
 
   function clicked() {
     invalidUsername = username === '';
@@ -32,7 +39,8 @@
   function generateUrl() {
     if (username !== '' && password !== '') {
       const data = dataToRequestParam(username, password, teamId);
-      dataParams.set(data);
+      dataParamsStore.set(data);
+      disableSaveLoginStore.set(disableSaveLogin)
       twoText.animate();
     }
 
@@ -67,6 +75,7 @@
       <p>{$t('generateUrl.warning.credentialsRequired')}</p>
     </div>
     <div>
+      <!-- Username -->
       <label for="username">
         {usernameTranslation}
         <input
@@ -79,6 +88,8 @@
           aria-invalid={invalidUsername}
         />
       </label>
+      
+      <!-- Password -->
       <label for="password">
         {passwordTranslation}
         <input
@@ -91,10 +102,28 @@
           aria-invalid={invalidPassword}
         />
       </label>
+      
+      <!-- Team id -->
       <label for="teamId">
         {teamIdTranslation}
         <input type="text" name="teamId" placeholder={teamIdTranslation} bind:value={teamId} />
       </label>
+      
+      <!-- Disable save login -->
+      <fieldset>
+        <label>
+          <input
+            name="disableSaveLogin"
+            type="checkbox"
+            role="switch"
+            bind:checked={disableSaveLogin}
+          />
+          {$t('generateUrl.form.disableSaveLogin')}
+        </label>
+        <p>
+          {$t('generateUrl.form.disableSaveLoginExtra')}
+        </p>
+      </fieldset>
     </div>
   </div>
 

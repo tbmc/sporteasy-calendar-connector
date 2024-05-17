@@ -1,11 +1,11 @@
 <script lang="ts">
   import { t } from 'svelte-i18n';
 
-  import { dataParams, getOrigin } from './store.js';
+  import { dataParamsStore, disableSaveLoginStore, getOrigin } from './store.js';
   import TwoTextComponent from '$lib/UI/TwoTextComponent.svelte';
 
   const origin = getOrigin();
-  $: url = `${origin}?data=${$dataParams}`;
+  $: url = `${origin}?${$disableSaveLoginStore ? 'disable_save_login=true&' : ''}data=${$dataParamsStore}`;
 
   let twoText: TwoTextComponent;
 
@@ -15,7 +15,7 @@
   }
 </script>
 
-{#if $dataParams !== ''}
+{#if $dataParamsStore !== ''}
   <article>
     <header>
       {$t('generateUrl.urlGenerated')}
