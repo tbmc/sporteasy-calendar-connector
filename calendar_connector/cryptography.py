@@ -2,7 +2,7 @@ import string
 import random
 import hashlib
 
-from consts import PRESENCE
+from calendar_connector.consts import PRESENCE
 
 _alphabet = string.printable
 

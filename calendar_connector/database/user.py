@@ -4,7 +4,7 @@ from peewee import Model, PrimaryKeyField, CharField
 
 from calendar_connector.cryptography import generate_salt, generate_hash
 from calendar_connector.database import db
-from custom_exceptions import TooManyUsersException
+from calendar_connector.custom_exceptions import TooManyUsersException
 
 
 class User(Model):
