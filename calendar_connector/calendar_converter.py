@@ -24,6 +24,30 @@ class CalendarConverter:
         url_root: str,
         team_id: Optional[str] = None,
     ) -> str:
+        """
+        Retrieves the calendar text from SportEasy for the specified team.
+
+        Args:
+            username (str): The username for the SportEasy account.
+            password (str): The password for the SportEasy account.
+            save_login (bool): If True, save the login credentials.
+            url_root (str): The base URL for the SportEasy API.
+            team_id (Optional[str], optional): The ID of the team to retrieve events for. Defaults to None.
+
+        Returns:
+            str: The calendar text in iCalendar format.
+
+        Raises:
+            Exception: If an error occurs while retrieving the calendar text.
+
+        Example:
+            ```python
+            calendar_converter = CalendarConverter()
+            calendar_content = calendar_converter.get_calendar_text(
+                "example_username", "example_password", False, "http://localhost:5000/", "12345"
+            )
+            ```
+        """
         self.connector.login(username, password)
 
         links_data: Optional[GenerateLinksData] = None

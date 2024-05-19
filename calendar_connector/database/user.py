@@ -1,22 +1,17 @@
 from typing import cast
 
-from peewee import Model, PrimaryKeyField, CharField
+from peewee import PrimaryKeyField, CharField
 
 from calendar_connector.cryptography import generate_salt, generate_hash
 from calendar_connector.custom_exceptions import TooManyUsersException
-from calendar_connector.database.db_connector import get_db
-
-db = get_db()
+from database.base_models import BaseModel
 
 
-class User(Model):
+class User(BaseModel):
     id = PrimaryKeyField()
     username = CharField(unique=True, max_length=256, null=False)
     password = CharField(max_length=256, null=False)
     salt = CharField(max_length=51, null=False)
-
-    class Meta:
-        database = db
 
 
 def save_user(username: str, password: str) -> User:

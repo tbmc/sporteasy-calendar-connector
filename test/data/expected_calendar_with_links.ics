@@ -21,11 +21,11 @@ CLASS:PUBLIC
 CREATED:20200101T010101Z
 DESCRIPTION:Présents: 8\, En attente: 7\, Non retenu: 0\, Absents: 2\n<a 
  href="http://localhost:5000/api/change_my_presence?team_id=1&event_id=1&us
- er_id=1&token=0eaf708ccf3540108808f6f0ab74813c9e4d6b53576215912473885061f7
- 8958&presence=yes">Present</a> | <a href="http://localhost:5000/api/change
- _my_presence?team_id=1&event_id=1&user_id=1&token=e866323a0c0aaad856b0da4e
- 5440003386867fd03e9fce6e78aca79c77eeed0c&presence=no">Absent</a>\n\nLast s
- ync: 2024-12-25 10:45:00
+ er_id=None&token=98c34043b604b043973acadcbcc6b051dde1d3043f27fee6de0089aae
+ 2f690fb&presence=yes">Present</a> | <a href="http://localhost:5000/api/cha
+ nge_my_presence?team_id=1&event_id=1&user_id=None&token=1e32f46899ac900246
+ 7942d1da1b1789a0ce6633a0e8ad6a74209aebab5e631c&presence=no">Absent</a>\n\n
+ Last sync: 2024-12-25 10:45:00
 LAST-MODIFIED:20200101T010101Z
 LOCATION:rue de la Paix\, 75000 Paris\, France
 STATUS:TENTATIVE
@@ -41,11 +41,11 @@ SEQUENCE:173512350
 CLASS:PUBLIC
 CREATED:20200101T010101Z
 DESCRIPTION:<a href="http://localhost:5000/api/change_my_presence?team_id=
- 1&event_id=2&user_id=1&token=acc7f68a8132063fc89d3670c92fe071c3954f2c23b7b
- a6782b0de9d92ddbd2c&presence=yes">Present</a> | <a href="http://localhost:
- 5000/api/change_my_presence?team_id=1&event_id=2&user_id=1&token=3e2378cb4
- 3731665a42b708fe61a512a6cf18b57f8cdd8475a60776ece9275a4&presence=no">Absen
- t</a>\n\nLast sync: 2024-12-25 10:45:00
+ 1&event_id=2&user_id=None&token=5cf8076ad0ce8e6ca17b793cf7abfe4b32d1bfd9be
+ 2ceadd65f63d2af8b42372&presence=yes">Present</a> | <a href="http://localho
+ st:5000/api/change_my_presence?team_id=1&event_id=2&user_id=None&token=727
+ a4d5a7ab761b6a36a32eed2d6643fe41648b7a48a788682ddb2a27bfc8cfb&presence=no"
+ >Absent</a>\n\nLast sync: 2024-12-25 10:45:00
 LAST-MODIFIED:20200101T010101Z
 LOCATION:rue de la Paix\, 75000 Paris\, France
 TRANSP:OPAQUE
