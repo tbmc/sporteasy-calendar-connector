@@ -28,5 +28,9 @@ jobs:
 
       - name: Run Black check
         run: black --check .
+
+      - name: Run Mypy
+        run: mypy .
+
       - name: Run Pytest
         run: pytest

@@ -41,4 +41,5 @@ MY_PRESENCE = {
     "not_played": "CANCELLED",
 }
 
-PRESENCE = namedtuple("Presence", ["present", "absent"])("yes", "no")
+_presence_type = namedtuple("_presence_type", ["present", "absent"])
+PRESENCE = _presence_type("yes", "no")

@@ -4,12 +4,12 @@ from unittest.mock import patch, MagicMock
 
 import requests_mock
 
-from consts import url_authenticate, url_list_teams, url_list_events
+from calendar_connector.consts import url_authenticate, url_list_teams, url_list_events
 import calendar_connector.calendar_converter
 import calendar_connector.event_convertor
-from database.user import User
+from calendar_connector.database.user import User
 
-from test_utils import read_text_by_name, replace_unwanted_lines
+from test.test_utils import read_text_by_name, replace_unwanted_lines
 
 
 @patch(

@@ -3,7 +3,7 @@ from typing import Optional
 
 from peewee import SqliteDatabase
 
-from utils import is_under_unittest
+from calendar_connector.utils import is_under_unittest
 
 _default_db_path = Path(__file__).parent.parent.parent / "database.db"
 

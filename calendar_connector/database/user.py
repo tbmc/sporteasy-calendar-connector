@@ -4,7 +4,7 @@ from peewee import PrimaryKeyField, CharField
 
 from calendar_connector.cryptography import generate_salt, generate_hash
 from calendar_connector.custom_exceptions import TooManyUsersException
-from database.base_models import BaseModel
+from calendar_connector.database.base_models import BaseModel
 
 
 class User(BaseModel):
@@ -27,7 +27,7 @@ def save_user(username: str, password: str) -> User:
 
     user = already_existing_users[0]
     if user.password != password:
-        user.password = password
+        user.password = password  # type: ignore
         user.save()
 
     return cast(User, user)

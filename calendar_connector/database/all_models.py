@@ -1,3 +1,3 @@
-from database.user import User
+from calendar_connector.database.user import User
 
 ALL_MODELS = [User]

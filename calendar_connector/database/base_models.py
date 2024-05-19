@@ -1,6 +1,6 @@
 from peewee import Model
 
-from database.db_connector import get_db
+from calendar_connector.database.db_connector import get_db
 
 db = get_db()
 

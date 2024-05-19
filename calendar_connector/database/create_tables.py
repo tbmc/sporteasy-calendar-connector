@@ -1,7 +1,7 @@
 from peewee import SqliteDatabase
 
 from calendar_connector.database.db_connector import get_db
-from database.all_models import ALL_MODELS
+from calendar_connector.database.all_models import ALL_MODELS
 
 
 def create_db(db: SqliteDatabase) -> None:
