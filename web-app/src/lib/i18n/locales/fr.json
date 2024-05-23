@@ -2,7 +2,7 @@
   "generateUrl": {
     "header": "Générer l'URL Sporteasy Calendar Converter",
     "warning": {
-      "logins": "Vous êtes sur le point de rentrer vos identifiants pour SportEasy. Potentiellement je pourrais les récupérer.",
+      "logins": "Vous êtes sur le point de rentrer vos identifiants pour SportEasy. Les indentifiants sont enregistrés (sans disable_save_login).",
       "repository": "Vous pouvez l'héberger vous même en utilisant le",
       "credentialsRequired": "Vos identifiants sont nécessaires pour accéder à votre calendrier Sporteasy."
     },
@@ -12,12 +12,15 @@
       "teamId": "Id de l'équipe (optionnel)",
       "buttonReset": "Réinitiliser",
       "buttonListTeams": "Lister les équipes",
-      "buttonGenerate": "Générer"
+      "buttonGenerate": "Générer",
+      "disableSaveLogin": "Désactiver la sauvegarde de vos identifiants",
+      "disableSaveLoginExtra": "En désactivant la sauvegarde de vos identifiants, ça désactive la possibilité d'avoir des liens dans la description de l'évènement qui permettent de répondre directement depuis votre calendrier."
     },
     "listTeams": {
       "title": "Liste des équipes",
       "name": "Nom de l'équipe",
-      "id": "Identifiant de l'équipe"
+      "id": "Identifiant de l'équipe",
+      "link": "Lien"
     },
     "urlGenerated": "URL générée"
   },

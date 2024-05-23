@@ -5,7 +5,8 @@
 
   $: data = $fetchTeamsData.map((t) => ({
     id: t[0],
-    name: t[1]
+    name: t[1],
+    url: t[2],
   }));
 </script>
 
@@ -21,6 +22,7 @@
           <tr>
             <th>{$t('generateUrl.listTeams.name')}</th>
             <th>{$t('generateUrl.listTeams.id')}</th>
+            <th>{$t('generateUrl.listTeams.link')}</th>
           </tr>
         </thead>
         <tbody>
@@ -28,6 +30,7 @@
             <tr>
               <td>{teamLine.name}</td>
               <td>{teamLine.id}</td>
+              <td><a href="{teamLine.url}">{$t('generateUrl.listTeams.link')}</a></td>
             </tr>
           {/each}
         </tbody>

@@ -1,0 +1,55 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Sporteasy Calendar Connector
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+REFRESH-INTERVAL;VALUE=DURATION:PT8H
+SUMMARY:SportEasyCalendar
+VTIMEZONE:UTC
+X-PUBLISHED-TTL:PT8H
+X-WR-CALDESC:SportEasy Calendar | Last sync: 2024-12-25 10:45:00
+X-WR-CALNAME:SportEasy Calendar
+X-WR-TIMEZONE:Europe/Paris
+BEGIN:VEVENT
+SUMMARY:Equipe 1 - Tournoi 1 - En attente
+DTSTART:20240123T070000Z
+DTEND:20240123T160000Z
+DTSTAMP:20240123T070000Z
+UID:1@sporteasy.net
+SEQUENCE:173512350
+CLASS:PUBLIC
+CREATED:20200101T010101Z
+DESCRIPTION:Présents: 8\, En attente: 7\, Non retenu: 0\, Absents: 2\n<a 
+ href="http://localhost:5000/api/change_my_presence?team_id=1&event_id=1&us
+ er_id=None&token=98c34043b604b043973acadcbcc6b051dde1d3043f27fee6de0089aae
+ 2f690fb&presence=yes">Present</a> | <a href="http://localhost:5000/api/cha
+ nge_my_presence?team_id=1&event_id=1&user_id=None&token=1e32f46899ac900246
+ 7942d1da1b1789a0ce6633a0e8ad6a74209aebab5e631c&presence=no">Absent</a>\n\n
+ <a href="https://equipe1.sporteasy.net/event/1/">SportEasy event</a>\n\nLa
+ st sync: 2024-12-25 10:45:00
+LAST-MODIFIED:20200101T010101Z
+LOCATION:rue de la Paix\, 75000 Paris\, France
+STATUS:TENTATIVE
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Equipe 1 - Entrainement 2
+DTSTART:20240126T180000Z
+DTEND:20240126T200000Z
+DTSTAMP:20240126T180000Z
+UID:2@sporteasy.net
+SEQUENCE:173512350
+CLASS:PUBLIC
+CREATED:20200101T010101Z
+DESCRIPTION:<a href="http://localhost:5000/api/change_my_presence?team_id=
+ 1&event_id=2&user_id=None&token=5cf8076ad0ce8e6ca17b793cf7abfe4b32d1bfd9be
+ 2ceadd65f63d2af8b42372&presence=yes">Present</a> | <a href="http://localho
+ st:5000/api/change_my_presence?team_id=1&event_id=2&user_id=None&token=727
+ a4d5a7ab761b6a36a32eed2d6643fe41648b7a48a788682ddb2a27bfc8cfb&presence=no"
+ >Absent</a>\n\n<a href="https://equipe1.sporteasy.net/event/2/">SportEasy 
+ event</a>\n\nLast sync: 2024-12-25 10:45:00
+LAST-MODIFIED:20200101T010101Z
+LOCATION:rue de la Paix\, 75000 Paris\, France
+TRANSP:OPAQUE
+END:VEVENT
+END:VCALENDAR

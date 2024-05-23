@@ -3,7 +3,7 @@ from typing import cast, Any
 from icalendar import Event
 
 from calendar_connector.consts import EVENT_TYPE, MY_PRESENCE
-from calendar_connector.exceptions import AttributeNotFoundException
+from calendar_connector.custom_exceptions import AttributeNotFoundException
 from calendar_connector.normalize import normalize
 
 
