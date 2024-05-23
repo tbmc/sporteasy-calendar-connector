@@ -7,11 +7,7 @@ connector.login(username, password)
 
 teams = connector.list_teams()
 
-team_list = [
-    ("TEAM NAME", "TEAM ID"),
-] + teams
-
-str_template = "{:^8} | {}"
-print(str_template.format("TEAM ID", "TEAM NAME"))
-for team_id, team_name in teams:
-    print(str_template.format(team_id, team_name))
+str_template = "{:^8} | {:15} | {}"
+print(str_template.format("TEAM ID", "TEAM NAME", "URL"))
+for team_id, team_name, team_url in teams:
+    print(str_template.format(team_id, team_name, team_url))

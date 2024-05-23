@@ -90,7 +90,8 @@
       },
       "has_deal_advertising": true,
       "total_unread_comments": 0,
-      "onboarding_info": null
+      "onboarding_info": null,
+      "web_url": "https://equipe1.sporteasy.net/"
     },
     {
       "id": 2,
@@ -181,7 +182,8 @@
       },
       "has_deal_advertising": true,
       "total_unread_comments": 1,
-      "onboarding_info": null
+      "onboarding_info": null,
+      "web_url": "https://equipe2.sporteasy.net/"
     }
   ]
 }

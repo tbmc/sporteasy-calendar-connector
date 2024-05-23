@@ -20,13 +20,14 @@ def event_to_calendar_event(
     team_name: str,
     event_data: EVENT_TYPE,
     links_data: Optional[GenerateLinksData],
+    team_web_url: str,
 ) -> Event:
     event = Event()
     event.add("uid", str(event_data["id"]) + f"@sporteasy.net")
     extract_event_location(event_data, event)
     extract_event_dates(event_data, event)
     extract_event_summary(event_data, event, team_name)
-    extract_event_description(team_id, event_data, event, links_data)
+    extract_event_description(team_id, event_data, event, links_data, team_web_url)
 
     event.add("class", "PUBLIC")
     current_timestamp = get_current_timestamp()

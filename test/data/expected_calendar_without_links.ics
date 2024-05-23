@@ -19,8 +19,9 @@ UID:1@sporteasy.net
 SEQUENCE:173512350
 CLASS:PUBLIC
 CREATED:20200101T010101Z
-DESCRIPTION:Présents: 8\, En attente: 7\, Non retenu: 0\, Absents: 2\n\nL
- ast sync: 2024-12-25 10:45:00
+DESCRIPTION:Présents: 8\, En attente: 7\, Non retenu: 0\, Absents: 2\n\n<
+ a href="https://equipe1.sporteasy.net/event/1/">SportEasy event</a>\n\nLas
+ t sync: 2024-12-25 10:45:00
 LAST-MODIFIED:20200101T010101Z
 LOCATION:rue de la Paix\, 75000 Paris\, France
 STATUS:TENTATIVE
@@ -35,7 +36,8 @@ UID:2@sporteasy.net
 SEQUENCE:173512350
 CLASS:PUBLIC
 CREATED:20200101T010101Z
-DESCRIPTION:Last sync: 2024-12-25 10:45:00
+DESCRIPTION:<a href="https://equipe1.sporteasy.net/event/2/">SportEasy eve
+ nt</a>\n\nLast sync: 2024-12-25 10:45:00
 LAST-MODIFIED:20200101T010101Z
 LOCATION:rue de la Paix\, 75000 Paris\, France
 TRANSP:OPAQUE

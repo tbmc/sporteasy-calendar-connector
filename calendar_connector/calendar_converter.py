@@ -80,7 +80,7 @@ class CalendarConverter:
         cal.add("REFRESH-INTERVAL;VALUE=DURATION", "PT8H")
         cal.add("X-PUBLISHED-TTL", "PT8H")
 
-        for current_team_id, team_name in teams:
+        for current_team_id, team_name, team_url in teams:
             # Ignore other teams
             if (
                 team_id is not None
@@ -92,7 +92,7 @@ class CalendarConverter:
             for event in events:
                 cal.add_component(
                     event_to_calendar_event(
-                        current_team_id, team_name, event, links_data
+                        current_team_id, team_name, event, links_data, team_url
                     )
                 )
 

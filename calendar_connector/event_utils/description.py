@@ -84,11 +84,17 @@ def _generate_response_links(
     return f"{present} | {absent}"
 
 
+def _generate_link_to_sporteasy(team_web_url: str, event_data: EVENT_TYPE) -> str:
+    id_ = event_data["id"]
+    return f'<a href="{team_web_url[:-1]}/event/{id_}/">SportEasy event</a>'
+
+
 def extract_event_description(
     team_id: int,
     event_data: EVENT_TYPE,
     event: Event,
     links_data: Optional[GenerateLinksData],
+    team_web_url: str,
 ) -> None:
     description = ""
     score = extract_scores(event_data)
@@ -101,6 +107,8 @@ def extract_event_description(
         event_id = cast(int, event_data["id"])
         response_links = _generate_response_links(team_id, event_id, links_data)
         description += f"{response_links}\n"
+
+    description += f"\n{_generate_link_to_sporteasy(team_web_url, event_data)}\n"
 
     description += f"\nLast sync: {get_formated_current_time()}\n"
 

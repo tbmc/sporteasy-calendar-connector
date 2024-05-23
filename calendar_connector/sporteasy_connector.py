@@ -1,4 +1,5 @@
 from typing import cast
+import collections
 
 import requests
 
@@ -12,6 +13,8 @@ from calendar_connector.consts import (
     url_csrf,
 )
 from calendar_connector.normalize import normalize
+
+team_namedtuple = collections.namedtuple("team_namedtuple", ["id", "name", "web_url"])
 
 
 class SporteasyConnector:
@@ -32,10 +35,13 @@ class SporteasyConnector:
         # csrf = authenticate_response.cookies.get(csrf_name)
         return token
 
-    def list_teams(self) -> list[tuple[int, str]]:
+    def list_teams(self) -> list[team_namedtuple]:
         response = self.session_requests.get(url_list_teams)
         data = response.json()
-        return [(d["id"], normalize(d["name"])) for d in data["results"]]
+        return [
+            team_namedtuple(d["id"], normalize(d["name"]), d["web_url"])
+            for d in data["results"]
+        ]
 
     def list_events(self, team_id: int) -> list[EVENT_TYPE]:
         response = self.session_requests.get(

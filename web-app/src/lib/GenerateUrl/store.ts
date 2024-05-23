@@ -21,7 +21,7 @@ export async function fetchTeamsGet(username: string, password: string) {
 
   try {
     const origin = getOrigin();
-    const response = await fetch(`${origin}/list-teams?data=${data}`);
+    const response = await fetch(`${origin}/api/list-teams?data=${data}`);
     fetchTeamsData.set(await response.json());
   } catch (e) {
     console.error(e);

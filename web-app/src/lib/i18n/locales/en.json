@@ -19,7 +19,8 @@
     "listTeams": {
       "title": "Team list",
       "name": "Team name",
-      "id": "Team id"
+      "id": "Team id",
+      "link": "Link"
     },
     "urlGenerated": "Generated URL"
   },
