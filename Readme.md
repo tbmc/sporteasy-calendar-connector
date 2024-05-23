@@ -1,4 +1,4 @@
-[![Github Container Pulls](https://img.shields.io/badge/Github%20Container%20Pulls-1K-blue
+[![Github Container Pulls](https://img.shields.io/badge/Github%20Container%20Pulls-1.08K-blue
 )](https://github.com/tbmc/sporteasy-calendar-connector/pkgs/container/sporteasy-calendar-connector)
 [![Docker Pulls](https://img.shields.io/docker/pulls/tbmc/sporteasy-calendar-connector)](https://hub.docker.com/r/tbmc/sporteasy-calendar-connector)
 
