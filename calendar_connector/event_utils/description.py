@@ -4,7 +4,6 @@ from typing import cast, Optional
 from icalendar import Event
 
 from calendar_connector.consts import (
-    EVENT_TYPE,
     ORDER_PRESENT,
     route_change_presence,
     PRESENCE,
@@ -12,6 +11,7 @@ from calendar_connector.consts import (
 from calendar_connector.datetime_utils import get_formated_current_time
 from calendar_connector.event_utils.score import extract_scores
 from calendar_connector.cryptography import generate_hash
+from calendar_connector.types.event_type import EventType
 
 
 @dataclasses.dataclass
@@ -23,20 +23,18 @@ class GenerateLinksData:
     url_root: str
 
 
-def _extract_attendee_description(event_data: EVENT_TYPE) -> str:
-    attendance_groups = cast(
-        list[dict[str, int | str]] | None, event_data["attendance_groups"]
-    )
+def _extract_attendee_description(event_data: EventType) -> str:
+    attendance_groups = event_data["attendance_groups"]
     attendee = ""
     if attendance_groups is not None:
         attendance_group_list: list[tuple[int, str, int]] = []
         for ppc in attendance_groups:
-            slug_sort_value = ORDER_PRESENT.get(cast(str, ppc["slug_name"]), 0)
+            slug_sort_value = ORDER_PRESENT.get(ppc["slug_name"], 0)
             attendance_group_list.append(
                 (
                     slug_sort_value,
-                    cast(str, ppc["localized_name"]),
-                    cast(int, ppc["count"]),
+                    ppc["localized_name"],
+                    ppc["count"],
                 )
             )
         attendance_group_list.sort(reverse=True)
@@ -84,14 +82,14 @@ def _generate_response_links(
     return f"{present} | {absent}"
 
 
-def _generate_link_to_sporteasy(team_web_url: str, event_data: EVENT_TYPE) -> str:
+def _generate_link_to_sporteasy(team_web_url: str, event_data: EventType) -> str:
     id_ = event_data["id"]
     return f'<a href="{team_web_url[:-1]}/event/{id_}/">SportEasy event</a>'
 
 
 def extract_event_description(
     team_id: int,
-    event_data: EVENT_TYPE,
+    event_data: EventType,
     event: Event,
     links_data: Optional[GenerateLinksData],
     team_web_url: str,
@@ -104,7 +102,7 @@ def extract_event_description(
     description += f"{attendee}\n"
 
     if links_data:
-        event_id = cast(int, event_data["id"])
+        event_id = event_data["id"]
         response_links = _generate_response_links(team_id, event_id, links_data)
         description += f"{response_links}\n"
 

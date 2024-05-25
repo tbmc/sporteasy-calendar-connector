@@ -1,24 +1,28 @@
-from typing import Literal, cast, Any
+from typing import Literal
 
-from calendar_connector.consts import EVENT_TYPE
+from calendar_connector.types.event_type import EventType
 
 
 def _extract_scores_for_opponent(
-    event_data: EVENT_TYPE, left_or_right: Literal["left", "right"]
+    event_data: EventType, left_or_right: Literal["left", "right"]
 ) -> tuple[str, int] | None:
-    opponent = event_data.get(f"opponent_{left_or_right}")
+    if left_or_right == "left":
+        opponent = event_data.get("opponent_left")
+    else:
+        opponent = event_data.get("opponent_right")
+
     if opponent is None:
         return None
-    opponent = cast(dict[str, Any], opponent)
-    score_str = opponent.get("score")
+
+    score_str = opponent["score"]
     if score_str is None:
         return None
-    name = cast(str, opponent.get("short_name"))
-    score = int(cast(str, score_str))
+    name = opponent["short_name"]
+    score = int(score_str)
     return name, score
 
 
-def extract_scores(event_data: EVENT_TYPE) -> str | None:
+def extract_scores(event_data: EventType) -> str | None:
     left = _extract_scores_for_opponent(event_data, "left")
     right = _extract_scores_for_opponent(event_data, "right")
 

@@ -1,10 +1,9 @@
-from typing import cast, Any
-
 from icalendar import Event
 
-from calendar_connector.consts import EVENT_TYPE, MY_PRESENCE
+from calendar_connector.consts import MY_PRESENCE
 from calendar_connector.custom_exceptions import AttributeNotFoundException
 from calendar_connector.normalize import normalize
+from calendar_connector.types.event_type import EventType
 
 
 def _status_to_ics_status(sp_status: str) -> str:
@@ -18,8 +17,8 @@ def _status_to_ics_status(sp_status: str) -> str:
     return sp_status
 
 
-def extract_event_summary(event_data: EVENT_TYPE, event: Event, team_name: str) -> None:
-    name = normalize(cast(str, event_data["name"]))
+def extract_event_summary(event_data: EventType, event: Event, team_name: str) -> None:
+    name = normalize(event_data["name"])
     if team_name not in name:
         summary = f"{team_name} - {name}"
     else:
@@ -37,9 +36,8 @@ def extract_event_summary(event_data: EVENT_TYPE, event: Event, team_name: str) 
     #     summary += f" - contre {opponent_name}"
 
     me_object = event_data.get("me", {})
-    me_object = cast(dict[str, Any], me_object)
     if me_object is not None and me_object.get("group") is not None:
-        group = cast(dict[str, str], me_object.get("group", {}))
+        group = me_object.get("group", {})
         localized_name_presence = group.get("localized_name")
         if localized_name_presence is not None:
             summary += f" - {normalize(localized_name_presence)}"

@@ -1,4 +1,3 @@
-from typing import cast
 import collections
 
 import requests
@@ -6,13 +5,16 @@ import requests
 from calendar_connector.consts import (
     url_authenticate,
     url_list_teams,
-    EVENT_TYPE,
     url_list_events,
     url_put_event_presence,
     url_me,
     url_csrf,
 )
 from calendar_connector.normalize import normalize
+from calendar_connector.types.event_type import EventType
+from calendar_connector.types.me_type import MeType
+from calendar_connector.types.request_type import RequestType, CsrfType
+from calendar_connector.types.team_type import TeamType
 
 team_namedtuple = collections.namedtuple("team_namedtuple", ["id", "name", "web_url"])
 
@@ -37,28 +39,30 @@ class SporteasyConnector:
 
     def list_teams(self) -> list[team_namedtuple]:
         response = self.session_requests.get(url_list_teams)
-        data = response.json()
+        data: RequestType[TeamType] = response.json()
         return [
             team_namedtuple(d["id"], normalize(d["name"]), d["web_url"])
             for d in data["results"]
         ]
 
-    def list_events(self, team_id: int) -> list[EVENT_TYPE]:
+    def list_events(self, team_id: int) -> list[EventType]:
         response = self.session_requests.get(
             url_list_events.format(team_id=team_id),
             headers={"Accept-Language": "fr-FR"},
         )
-        data: list[EVENT_TYPE] = response.json()["results"]
+        data: list[EventType] = response.json()["results"]
         return data
 
     def get_profile_id(self) -> int:
         response = self.session_requests.get(url_me)
-        profile_id = cast(int, response.json()["id"])
+        data: MeType = response.json()
+        profile_id = data["id"]
         return profile_id
 
     def get_csrf_token(self, team_id: int) -> tuple[str, str]:
         response = self.session_requests.get(url_csrf)
-        csrf = response.json()["csrf_token"]
+        data: CsrfType = response.json()
+        csrf = data["csrf_token"]
 
         teams = self.session_requests.get(url_list_teams).json()["results"]
         current_team = [t for t in teams if t["id"] == team_id][0]

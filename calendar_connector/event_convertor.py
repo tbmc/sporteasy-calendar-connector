@@ -1,9 +1,8 @@
 from datetime import datetime
-from typing import Any, cast, Optional
+from typing import Optional
 
 from icalendar import Event
 
-from calendar_connector.consts import EVENT_TYPE
 from calendar_connector.datetime_utils import get_current_timestamp
 from calendar_connector.event_utils.date import extract_event_dates
 from calendar_connector.event_utils.description import (
@@ -13,12 +12,13 @@ from calendar_connector.event_utils.description import (
 from calendar_connector.event_utils.location import extract_event_location
 from calendar_connector.event_utils.summary import extract_event_summary
 from calendar_connector.normalize import normalize
+from calendar_connector.types.event_type import EventType
 
 
 def event_to_calendar_event(
     team_id: int,
     team_name: str,
-    event_data: EVENT_TYPE,
+    event_data: EventType,
     links_data: Optional[GenerateLinksData],
     team_web_url: str,
 ) -> Event:
@@ -38,8 +38,6 @@ def event_to_calendar_event(
     event.add("created", datetime(2020, 1, 1, 1, 1, 1))
     event.add("last-modified", datetime(2020, 1, 1, 1, 1, 1))
 
-    category_name = normalize(
-        cast(dict[str, str | Any], event_data["category"])["localized_name"]
-    )
+    category_name = normalize(event_data["category"]["localized_name"])
 
     return event

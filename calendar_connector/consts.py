@@ -1,4 +1,3 @@
-from typing import Any
 from collections import namedtuple
 import pytz
 
@@ -18,7 +17,7 @@ url_put_event_presence = url_event_base + "/profiles/{profile_id}/"
 route_change_presence = "/api/change_my_presence"
 
 PLAYED_WORDS = "played", "present", "available"
-EVENT_TYPE = dict[str, int | str | Any | list[Any] | dict[str, Any]]
+
 TIMEZONE = pytz.timezone("UTC")
 
 ORDER_PRESENT = {
