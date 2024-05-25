@@ -1,6 +1,6 @@
 from typing import Literal
 
-from calendar_connector.types.event_type import EventType
+from calendar_connector.requests_types.event_type import EventType
 
 
 def _extract_scores_for_opponent(

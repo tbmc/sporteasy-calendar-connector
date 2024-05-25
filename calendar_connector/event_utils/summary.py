@@ -3,7 +3,7 @@ from icalendar import Event
 from calendar_connector.consts import MY_PRESENCE
 from calendar_connector.custom_exceptions import AttributeNotFoundException
 from calendar_connector.normalize import normalize
-from calendar_connector.types.event_type import EventType
+from calendar_connector.requests_types.event_type import EventType
 
 
 def _status_to_ics_status(sp_status: str) -> str:

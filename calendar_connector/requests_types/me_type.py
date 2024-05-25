@@ -1,6 +1,6 @@
 from typing import TypedDict, Any, Optional
 
-from calendar_connector.types.shared_type import AvatarType
+from calendar_connector.requests_types.shared_type import AvatarType
 
 
 class LinkType(TypedDict):

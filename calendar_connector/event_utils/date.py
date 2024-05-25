@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from icalendar import Event
 
 from calendar_connector.consts import TIMEZONE
-from calendar_connector.types.event_type import EventType
+from calendar_connector.requests_types.event_type import EventType
 
 
 def extract_event_dates(event_data: EventType, event: Event) -> None:

@@ -1,7 +1,7 @@
 from typing import TypedDict, Any, Optional
 
-from calendar_connector.types.season_type import SeasonType
-from calendar_connector.types.shared_type import CountryType
+from calendar_connector.requests_types.season_type import SeasonType
+from calendar_connector.requests_types.shared_type import CountryType
 
 
 class LocationType(TypedDict):

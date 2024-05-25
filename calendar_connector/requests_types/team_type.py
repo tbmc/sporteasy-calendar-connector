@@ -1,6 +1,6 @@
 from typing import TypedDict, Any, Optional
 
-from calendar_connector.types.shared_type import (
+from calendar_connector.requests_types.shared_type import (
     CountryType,
     LogoType,
     SiteType,

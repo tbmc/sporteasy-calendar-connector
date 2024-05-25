@@ -11,10 +11,10 @@ from calendar_connector.consts import (
     url_csrf,
 )
 from calendar_connector.normalize import normalize
-from calendar_connector.types.event_type import EventType
-from calendar_connector.types.me_type import MeType
-from calendar_connector.types.request_type import RequestType, CsrfType
-from calendar_connector.types.team_type import TeamType
+from calendar_connector.requests_types.event_type import EventType
+from calendar_connector.requests_types.me_type import MeType
+from calendar_connector.requests_types.request_type import RequestType, CsrfType
+from calendar_connector.requests_types.team_type import TeamType
 
 team_namedtuple = collections.namedtuple("team_namedtuple", ["id", "name", "web_url"])
 

@@ -11,7 +11,7 @@ from calendar_connector.consts import (
 from calendar_connector.datetime_utils import get_formated_current_time
 from calendar_connector.event_utils.score import extract_scores
 from calendar_connector.cryptography import generate_hash
-from calendar_connector.types.event_type import EventType
+from calendar_connector.requests_types.event_type import EventType
 
 
 @dataclasses.dataclass

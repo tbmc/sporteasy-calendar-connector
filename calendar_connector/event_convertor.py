@@ -12,7 +12,7 @@ from calendar_connector.event_utils.description import (
 from calendar_connector.event_utils.location import extract_event_location
 from calendar_connector.event_utils.summary import extract_event_summary
 from calendar_connector.normalize import normalize
-from calendar_connector.types.event_type import EventType
+from calendar_connector.requests_types.event_type import EventType
 
 
 def event_to_calendar_event(
