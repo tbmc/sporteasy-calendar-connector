@@ -162,6 +162,10 @@ cython_debug/
 
 data_*.txt
 
+.idea/*
 test/
 docs/
 database.db
+web-app/node_modules/*
+web-app/.svelte-kit/*
+web-app/build/*

@@ -14,12 +14,15 @@ from calendar_connector.sporteasy_connector import SporteasyConnector
 from calendar_connector.database.user import generate_links_data
 from calendar_connector.custom_exceptions import BadTokenException
 from calendar_connector.presence_updater import set_presence_to_event
+from calendar_connector.database.create_tables import create_db
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S",
     level=logging.INFO,
 )
+
+create_db()
 
 app = flask.Flask(__name__)
 
