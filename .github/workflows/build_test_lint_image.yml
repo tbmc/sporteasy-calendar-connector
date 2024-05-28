@@ -40,6 +40,7 @@ jobs:
   
   build_and_publish_image:
     name: Build and publish image
+    needs: [test_and_lint]
     if: github.event_name != 'pull_request'
     permissions:
       contents: read
