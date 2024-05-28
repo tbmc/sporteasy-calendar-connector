@@ -1,4 +1,3 @@
-version: "3"
 services:
   sporteasy-calendar-connector:
     image: sporteasy-calendar-connector
@@ -8,5 +7,8 @@ services:
       - "5000:5000"
     volumes:
       - ./sporteasy-calendar-connector-logs:/logs
-      - ./database.db:/app/database.db
+      # Ensure this file exists before running. `touch database.db` is sufficient.
+      - type: bind
+        source: ./database.db
+        target: /app/database.db
     restart: unless-stopped
