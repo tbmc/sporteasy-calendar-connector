@@ -2,7 +2,7 @@
   "generateUrl": {
     "header": "Générer l'URL Sporteasy Calendar Converter",
     "warning": {
-      "logins": "Vous êtes sur le point de rentrer vos identifiants pour SportEasy. Les indentifiants sont enregistrés (sans disable_save_login).",
+      "logins": "Vous êtes sur le point de rentrer vos identifiants pour SportEasy. Les indentifiants peuvent être enregistrés (si \"Désactiver la sauvegarde de vos identifiants\" n'est pas coché).",
       "repository": "Vous pouvez l'héberger vous même en utilisant le",
       "credentialsRequired": "Vos identifiants sont nécessaires pour accéder à votre calendrier Sporteasy."
     },

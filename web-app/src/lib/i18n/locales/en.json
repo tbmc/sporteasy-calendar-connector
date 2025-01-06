@@ -2,7 +2,7 @@
   "generateUrl": {
     "header": "Generate Sporteasy Calendar Converter URL",
     "warning": {
-      "logins": "You are about to enter your Sporteasy credentials. Your logins are saved.",
+      "logins": "You are about to enter your Sporteasy credentials. Your logins can be saved if \"Deactivate savings of your login details\" is not checked.",
       "repository": "You can host it yourself using",
       "credentialsRequired": "Your credentials are required to access your Sporteasy calendar."
     },
