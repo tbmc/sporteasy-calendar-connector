@@ -2,7 +2,7 @@ import base64
 import flask
 import json
 
-from .env import env
+from .env import _env
 
 
 def decode_data() -> tuple[str, str, str | None]:
@@ -24,9 +24,9 @@ def decode_data() -> tuple[str, str, str | None]:
         team_id = flask.request.args.get("team_id")
 
     if username is None or password is None:
-        username = env.get("username")
-        password = env.get("password")
-        team_id = env.get("team_id")
+        username = _env.get("username")
+        password = _env.get("password")
+        team_id = _env.get("team_id")
     if username is None or not any(username) or password is None or not any(password):
         raise Exception("Missing username and password")
 
