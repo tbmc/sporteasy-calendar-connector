@@ -11,6 +11,7 @@
   import TwoTextComponent from '$lib/UI/TwoTextComponent.svelte';
   import AlertWarning from '$lib/Components/AlertWarning.svelte';
   import AlertInfo from '$lib/Components/AlertInfo.svelte';
+  import Github from '$lib/images/github.svelte';
 
   let usernameTranslation = $t('generateUrl.form.username');
   let passwordTranslation = $t('generateUrl.form.password');
@@ -76,7 +77,12 @@
       </AlertWarning>
       <p>
         {$t('generateUrl.warning.repository')}
-        <a href="https://github.com/tbmc/sporteasy-calendar-connector">Github repo</a>
+        <a href="https://github.com/tbmc/sporteasy-calendar-connector">
+          <span class="logo-github">
+            <Github />
+          </span>
+          Github repo
+        </a>
       </p>
       <p>{$t('generateUrl.warning.credentialsRequired')}</p>
     </div>
@@ -163,5 +169,11 @@
   footer button.generate {
     background-color: var(--primary-color);
     border-color: var(--primary-color);
+  }
+
+  .logo-github {
+    width: 1.2em;
+    display: inline-block;
+    color: var(--primary-color);
   }
 </style>
