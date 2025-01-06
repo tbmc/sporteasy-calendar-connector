@@ -163,3 +163,4 @@ cython_debug/
 data_*.txt
 database.db
 
+*.exe

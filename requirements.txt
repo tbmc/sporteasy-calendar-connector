@@ -1,5 +1,5 @@
 ﻿black==24.4.2
-requests==2.31.0
+requests==2.32.3
 requests-mock==1.12.1
 python-dotenv==1.0.0
 icalendar==5.0.7
@@ -8,7 +8,7 @@ pytest==8.2.0
 pytz==2023.3
 types-pytz==2023.3.0.0
 Flask==2.3.2
-gunicorn==20.1.0
+gunicorn==23.0.0
 peewee==3.17.5
 types-peewee==3.17.3.20240424
 mypy==1.10.0
