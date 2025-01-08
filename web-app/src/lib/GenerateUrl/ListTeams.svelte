@@ -2,12 +2,17 @@
   import { t } from 'svelte-i18n';
 
   import { fetchTeamsData, fetchTeamsLoadedOnce } from './store.js';
+  import type { Action } from 'svelte/action';
 
   $: data = $fetchTeamsData.map((t) => ({
     id: t[0],
     name: t[1],
-    url: t[2],
+    url: t[2]
   }));
+
+  const onLoad: Action = (element) => {
+    window.scrollTo(0, document.body.scrollHeight);
+  };
 </script>
 
 {#if $fetchTeamsLoadedOnce}
@@ -16,7 +21,7 @@
       {$t('generateUrl.listTeams.title')}
     </header>
 
-    <div>
+    <div use:onLoad>
       <table>
         <thead>
           <tr>
@@ -30,7 +35,7 @@
             <tr>
               <td>{teamLine.name}</td>
               <td>{teamLine.id}</td>
-              <td><a href="{teamLine.url}">{$t('generateUrl.listTeams.link')}</a></td>
+              <td><a href={teamLine.url}>{$t('generateUrl.listTeams.link')}</a></td>
             </tr>
           {/each}
         </tbody>
@@ -41,7 +46,7 @@
 
 <style>
   header {
-      color: white;
-      background-color: var(--primary-background);
+    color: white;
+    background-color: var(--primary-background);
   }
 </style>

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { t } from 'svelte-i18n';
 
-  import { dataToRequestParam } from '$lib/GenerateUrl/dataToRequestParam.js';
+  import { generateRequestPayload } from '$lib/GenerateUrl/dataToRequestParam.js';
   import {
     dataParamsStore,
     disableSaveLoginStore,
@@ -39,9 +39,9 @@
 
   let twoText: TwoTextComponent;
 
-  function generateUrl() {
+  async function generateUrl() {
     if (username !== '' && password !== '') {
-      const data = dataToRequestParam(username, password, teamId);
+      const data = await generateRequestPayload(username, password, teamId);
       dataParamsStore.set(data);
       disableSaveLoginStore.set(disableSaveLogin);
       twoText.animate();
@@ -142,9 +142,9 @@
   <footer>
     <div class="grid">
       <div />
-      <button class="secondary outline reset" on:click={reset}
-        >{$t('generateUrl.form.buttonReset')}</button
-      >
+      <button class="secondary outline reset" on:click={reset}>
+        {$t('generateUrl.form.buttonReset')}
+      </button>
       <button class="secondary list-teams" on:click={listTeams} aria-busy={$fetchTeamsIsLoading}>
         {$t('generateUrl.form.buttonListTeams')}
       </button>

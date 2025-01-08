@@ -24,4 +24,4 @@ RUN rm -rf web-app
 COPY --from=build-web-app /app/web-app/build /app/web-app/build
 RUN pip install -r requirements.txt
 
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--access-logfile", "/logs/access.log", "--error-logfile", "/logs/error.log", "app:app"]
+CMD ["gunicorn", "--workers", "2", "--bind", "0.0.0.0:5000", "--access-logfile", "/logs/access.log", "--error-logfile", "/logs/error.log", "app:app"]

@@ -68,7 +68,7 @@ Take json and transform it to base64, then url encode it
 
 You can use mine, but at your own risk.
 
-:warning: Data in base64 are not ciphered.
+:warning: Data are encrypted but server still can decrypt it
 
 ``
 https://sporteasy-calendar-connector.tbmc.ovh/api?data={base64Data}

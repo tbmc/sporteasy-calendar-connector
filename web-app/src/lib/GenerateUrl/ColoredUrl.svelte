@@ -7,8 +7,7 @@
 <span class="origin-color">{origin}</span><span class="default-color">/api?</span><span
   class="disable-save-login-color">{disableSaveLogin ? 'disable_save_login=true' : ''}</span
 ><span class="default-color">{disableSaveLogin ? '&' : ''}</span><span class="data-color"
-  >data={data}</span
->
+  >data={data}</span><span class="default-color">&encrypted=1</span>
 
 <style>
   .default-color {
