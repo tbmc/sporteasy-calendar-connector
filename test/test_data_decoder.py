@@ -59,7 +59,7 @@ def test_decode_data_env() -> None:
     }
     with (
         mock.patch("flask.request", util_args),
-        mock.patch("calendar_connector.data_decoder.env", env),
+        mock.patch("calendar_connector.data_decoder._env", env),
     ):
         username, password, team_id = decode_data()
 

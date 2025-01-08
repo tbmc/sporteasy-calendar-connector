@@ -10,7 +10,7 @@ def test_env() -> None:
         "team_id": "ti",
     }
 
-    with mock.patch("calendar_connector.env.env", env):
+    with mock.patch("calendar_connector.env._env", env):
         username, password, team_id = load_env_data()
 
     assert username == "u"
