@@ -33,6 +33,8 @@ The same image is available from 2 different registry:
 | [ Github ]( https://github.com/tbmc/sporteasy-calendar-connector/pkgs/container/sporteasy-calendar-connector ) | ghcr.io/tbmc/sporteasy-calendar-connector:latest |
 | [ Docker Hub ]( https://hub.docker.com/r/tbmc/sporteasy-calendar-connector )                                   | tbmc/sporteasy-calendar-connector:latest         |
 
+:warning: Do not forget to add populate `SERVER_PRIVATE_KEY` in `.env`. It is now required to encrypted data in links.
+
 ## How to use it
 
 ### Populate ``.env``
