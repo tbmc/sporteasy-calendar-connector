@@ -23,7 +23,7 @@ def event_to_calendar_event(
     team_web_url: str,
 ) -> Event:
     event = Event()
-    event.add("uid", str(event_data["id"]) + f"@sporteasy.net")
+    event.add("uid", str(event_data["id"]) + "@sporteasy.net")
     extract_event_location(event_data, event)
     extract_event_dates(event_data, event)
     extract_event_summary(event_data, event, team_name)
