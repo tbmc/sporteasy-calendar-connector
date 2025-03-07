@@ -6,7 +6,7 @@ ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
 
-RUN wget -qO- https://get.pnpm.io/install.sh | sh -
+RUN wget -qO- https://get.pnpm.io/install.sh | env PNPM_VERSION=10.0.0 sh -
 COPY . .
 RUN cd web-app && pnpm install && pnpm build
 
