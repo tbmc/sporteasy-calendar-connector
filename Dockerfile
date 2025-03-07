@@ -6,9 +6,9 @@ ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
 
-RUN wget -qO- https://get.pnpm.io/install.sh | env PNPM_VERSION=10.0.0 sh -
+RUN wget -qO- https://get.pnpm.io/install.sh | sh -
 COPY . .
-RUN cd web-app && pnpm install && pnpm build
+RUN cd web-app && npm install --global corepack@latest && env pnpm install && pnpm build
 
 RUN mv ./web-app/build ./temp-build \
     && rm -rf ./web-app \
