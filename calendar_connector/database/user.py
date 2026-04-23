@@ -69,9 +69,9 @@ def generate_links_data(
     return generate_hash(
         team_id,
         event_id,
-        user.id,  # pyright: ignore[reportUnknownMemberType,reportArgumentType]
-        user.username,  # pyright: ignore[reportUnknownMemberType,reportArgumentType]
-        user.password,  # pyright: ignore[reportUnknownMemberType,reportArgumentType]
-        user.salt,  # pyright: ignore[reportUnknownMemberType,reportArgumentType]
+        user.id,  # type: ignore[arg-type]
+        user.username,  # type: ignore[arg-type]
+        user.password,  # type: ignore[arg-type]
+        user.salt,  # type: ignore[arg-type]
         presence,  # type: ignore[arg-type]
     )
