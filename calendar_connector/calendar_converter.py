@@ -1,15 +1,18 @@
 from typing import Optional, cast
+import logging
 
 from icalendar import Calendar, vText
 
 from calendar_connector.database.user import save_user
 from calendar_connector.datetime_utils import (
-    get_formated_current_time,
+    get_formatted_current_time,
 )
 from calendar_connector.env import load_env_data
 from calendar_connector.event_convertor import event_to_calendar_event
 from calendar_connector.event_utils.description import GenerateLinksData
 from calendar_connector.sporteasy_connector import SporteasyConnector
+
+logger = logging.getLogger(__name__)
 
 
 class CalendarConverter:
@@ -48,20 +51,25 @@ class CalendarConverter:
             )
             ```
         """
+        logger.info("Starting calendar generation (team_id_filter=%s)", team_id)
         self.connector.login(username, password)
 
         links_data: Optional[GenerateLinksData] = None
         if save_login:
+            logger.debug("Saving user credentials for presence links")
             user = save_user(username, password)
             links_data = GenerateLinksData(
                 cast(int, user.id),
-                cast(str, username),
-                cast(str, password),
+                username,
+                password,
                 cast(str, user.salt),
                 url_root,
             )
+        else:
+            logger.debug("Skipping credential persistence (save_login disabled)")
 
         teams = self.connector.list_teams()
+        logger.info("Retrieved %s teams", len(teams))
 
         cal = Calendar()
         cal.add("summary", vText("SportEasyCalendar"))
@@ -75,11 +83,12 @@ class CalendarConverter:
 
         cal.add(
             "x-wr-caldesc",
-            f"SportEasy Calendar | Last sync: {get_formated_current_time()}",
+            f"SportEasy Calendar | Last sync: {get_formatted_current_time()}",
         )
         cal.add("REFRESH-INTERVAL;VALUE=DURATION", "PT8H")
         cal.add("X-PUBLISHED-TTL", "PT8H")
 
+        total_events = 0
         for current_team_id, team_name, team_url in teams:
             # Ignore other teams
             if (
@@ -87,16 +96,35 @@ class CalendarConverter:
                 and team_id != ""
                 and int(team_id) != current_team_id
             ):
+                logger.debug(
+                    "Skipping team %s (%s) because it does not match filter %s",
+                    current_team_id,
+                    team_name,
+                    team_id,
+                )
                 continue
             events = self.connector.list_events(current_team_id)
+            logger.debug(
+                "Retrieved %s events for team_id=%s team_name=%s",
+                len(events),
+                current_team_id,
+                team_name,
+            )
             for event in events:
                 cal.add_component(
                     event_to_calendar_event(
                         current_team_id, team_name, event, links_data, team_url
                     )
                 )
+            total_events += len(events)
 
         text_calendar: str = cal.to_ical().decode("utf-8").strip()
+
+        logger.info(
+            "Calendar generation completed (teams=%s, events=%s)",
+            len(teams),
+            total_events,
+        )
 
         return text_calendar
 

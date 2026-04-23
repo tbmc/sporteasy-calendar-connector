@@ -8,7 +8,7 @@ from calendar_connector.consts import (
     route_change_presence,
     PRESENCE,
 )
-from calendar_connector.datetime_utils import get_formated_current_time
+from calendar_connector.datetime_utils import get_formatted_current_time
 from calendar_connector.event_utils.score import extract_scores
 from calendar_connector.cryptography import generate_hash
 from calendar_connector.requests_types.event_type import EventType
@@ -108,6 +108,6 @@ def extract_event_description(
 
     description += f"\n{_generate_link_to_sporteasy(team_web_url, event_data)}\n"
 
-    description += f"\nLast sync: {get_formated_current_time()}\n"
+    description += f"\nLast sync: {get_formatted_current_time()}\n"
 
     event.add("description", description.strip())
