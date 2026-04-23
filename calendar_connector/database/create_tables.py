@@ -13,7 +13,7 @@ def create_db(db: Optional[SqliteDatabase] = None) -> None:
     if db is None:
         db = get_db()
     logger.info("Creating database tables (%s models)", len(ALL_MODELS))
-    db.create_tables(ALL_MODELS) # pyright: ignore[reportUnknownMemberType]
+    db.create_tables(ALL_MODELS)  # pyright: ignore[reportUnknownMemberType]
     logger.debug("Database tables created")
 
 

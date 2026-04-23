@@ -34,9 +34,13 @@ def decode_data() -> tuple[str, str, str | None]:
         password = _env.get("password")
         team_id = _env.get("team_id")
     if username is None or not any(username) or password is None or not any(password):
-        logger.warning("Missing username/password after all credential sources were checked")
+        logger.warning(
+            "Missing username/password after all credential sources were checked"
+        )
         raise Exception("Missing username and password")
 
-    logger.debug("Credentials successfully decoded (team_id_provided=%s)", team_id is not None)
+    logger.debug(
+        "Credentials successfully decoded (team_id_provided=%s)", team_id is not None
+    )
 
     return username, password, team_id

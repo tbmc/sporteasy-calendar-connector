@@ -41,8 +41,10 @@ MY_PRESENCE = {
     "not_played": "CANCELLED",
 }
 
+
 class PresenceType(NamedTuple):
     present: str
     absent: str
+
 
 PRESENCE = PresenceType("yes", "no")

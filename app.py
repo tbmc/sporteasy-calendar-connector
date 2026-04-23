@@ -72,7 +72,9 @@ def _generate_request_payload() -> str:
         data["team_id"] = input_data["team_id"]
     string = json.dumps(data)
     encrypted = encrypt_message(string)
-    logger.info("Generated encrypted request payload (team_id_provided=%s)", "team_id" in data)
+    logger.info(
+        "Generated encrypted request payload (team_id_provided=%s)", "team_id" in data
+    )
     return encrypted.decode("utf-8")
 
 

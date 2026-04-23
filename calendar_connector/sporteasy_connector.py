@@ -18,10 +18,12 @@ from calendar_connector.requests_types.me_type import MeType
 from calendar_connector.requests_types.request_type import RequestType, CsrfType
 from calendar_connector.requests_types.team_type import TeamType
 
+
 class TeamNamedTuple(NamedTuple):
     id: int
     name: str
     web_url: str
+
 
 team_namedtuple = TeamNamedTuple
 
@@ -51,7 +53,9 @@ class SporteasyConnector:
             raise Exception("Authentication error")
         token: str | None = authenticate_response.cookies.get("sporteasy")
         if token is None:
-            logger.error("Authentication succeeded but no token found for user=%s", username)
+            logger.error(
+                "Authentication succeeded but no token found for user=%s", username
+            )
             raise Exception("Authentication error: no token received")
 
         # csrf = authenticate_response.cookies.get(csrf_name)
@@ -62,7 +66,9 @@ class SporteasyConnector:
         logger.debug("Fetching teams")
         response = self.session_requests.get(url_list_teams)
         if response.status_code != 200:
-            logger.warning("Unexpected status while listing teams: %s", response.status_code)
+            logger.warning(
+                "Unexpected status while listing teams: %s", response.status_code
+            )
         data: RequestType[TeamType] = response.json()
         teams = [
             team_namedtuple(d["id"], normalize(d["name"]), d["web_url"])

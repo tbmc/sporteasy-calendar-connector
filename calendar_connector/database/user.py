@@ -17,8 +17,14 @@ class User(BaseModel):
 
 
 def save_user(username: str, password: str) -> User:
-    already_existing_users: list[User] = list(User.select().where(User.username == username)) # pyright: ignore[reportUnknownMemberType]
-    logger.debug("save_user called for username=%s (matches=%s)", username, len(already_existing_users))
+    already_existing_users: list[User] = list(
+        User.select().where(User.username == username)
+    )  # pyright: ignore[reportUnknownMemberType]
+    logger.debug(
+        "save_user called for username=%s (matches=%s)",
+        username,
+        len(already_existing_users),
+    )
 
     if len(already_existing_users) > 1:
         logger.error("Multiple users found for username=%s", username)
@@ -26,25 +32,27 @@ def save_user(username: str, password: str) -> User:
 
     if len(already_existing_users) == 0:
         user = User(username=username, password=password, salt=generate_salt())
-        user.save() # pyright: ignore[reportUnknownMemberType]
+        user.save()  # pyright: ignore[reportUnknownMemberType]
         logger.info("Created new user record for username=%s", username)
         return user
 
     user = already_existing_users[0]
     if user.password != password:
-        user.password = password # type: ignore[assignment]
-        user.save()# pyright: ignore[reportUnknownMemberType]
+        user.password = password  # type: ignore[assignment]
+        user.save()  # pyright: ignore[reportUnknownMemberType]
         logger.info("Updated stored password for username=%s", username)
     else:
-        logger.debug("User already exists with unchanged password for username=%s", username)
+        logger.debug(
+            "User already exists with unchanged password for username=%s", username
+        )
 
     return user
 
 
 def get_username_password(user_id: int) -> tuple[str, str]:
     logger.debug("Fetching username/password for user_id=%s", user_id)
-    user: User = User.select().where(User.id == user_id).get() # pyright: ignore[reportUnknownVariableType, reportUnknownMemberType]
-    return user.username, user.password # type: ignore[return-value]
+    user: User = User.select().where(User.id == user_id).get()  # pyright: ignore[reportUnknownVariableType, reportUnknownMemberType]
+    return user.username, user.password  # type: ignore[return-value]
 
 
 def generate_links_data(
@@ -57,7 +65,13 @@ def generate_links_data(
         user_id,
         presence,
     )
-    user: User = User.select().where(User.id == user_id).get() # pyright: ignore[reportUnknownVariableType, reportUnknownMemberType]
+    user: User = User.select().where(User.id == user_id).get()  # pyright: ignore[reportUnknownVariableType, reportUnknownMemberType]
     return generate_hash(
-        team_id, event_id, user.id, user.username, user.password, user.salt, presence # type: ignore[arg-type]
+        team_id,
+        event_id,
+        user.id,
+        user.username,
+        user.password,
+        user.salt,
+        presence,  # type: ignore[arg-type]
     )
