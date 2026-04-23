@@ -17,6 +17,7 @@ from calendar_connector.custom_exceptions import BadTokenException
 from calendar_connector.presence_updater import set_presence_to_event
 from calendar_connector.database.create_tables import create_db
 from calendar_connector.cryptography import encrypt_message, decrypt_message
+import google.cloud.logging
 
 logger = logging.getLogger(__name__)
 
@@ -25,6 +26,14 @@ logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M:%S",
     level=logging.INFO,
 )
+
+gcp_project = os.getenv("GOOGLE_CLOUD_PROJECT", default="").strip().lower()
+if len(gcp_project) > 0:
+    client = google.cloud.logging.Client()
+    client.setup_logging(log_level=logging.DEBUG)  # pyright: ignore[reportUnknownMemberType]
+    logger.info("GOOGLE_CLOUD_PROJECT set to '%s', logs will be sent to GCP", gcp_project)
+else:
+    logger.info("GOOGLE_CLOUD_PROJECT not set, logs will not be sent to GCP")
 
 create_db()
 

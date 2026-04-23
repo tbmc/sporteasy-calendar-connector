@@ -5,10 +5,14 @@ services:
       context: ./
     ports:
       - "5000:5000"
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/.gcp/credentials.json
+      - GOOGLE_CLOUD_PROJECT=$GOOGLE_CLOUD_PROJECT
     volumes:
       - ./sporteasy-calendar-connector-logs:/logs
       # Ensure this file exists before running. `touch database.db` is sufficient.
       - type: bind
         source: ./database.db
         target: /app/database.db
+      - ./.gcp/credentials.json:/app/.gcp/credentials.json:ro
     restart: unless-stopped
