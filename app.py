@@ -31,7 +31,9 @@ gcp_project = os.getenv("GOOGLE_CLOUD_PROJECT", default="").strip().lower()
 if len(gcp_project) > 0:
     client = google.cloud.logging.Client()
     client.setup_logging(log_level=logging.DEBUG)  # pyright: ignore[reportUnknownMemberType]
-    logger.info("GOOGLE_CLOUD_PROJECT set to '%s', logs will be sent to GCP", gcp_project)
+    logger.info(
+        "GOOGLE_CLOUD_PROJECT set to '%s', logs will be sent to GCP", gcp_project
+    )
 else:
     logger.info("GOOGLE_CLOUD_PROJECT not set, logs will not be sent to GCP")
 

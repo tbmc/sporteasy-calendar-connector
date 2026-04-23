@@ -22,3 +22,9 @@ dependencies = [
     "types-pytz==2026.1.1.20260408",
     "types-requests==2.33.0.20260408",
 ]
+
+[tool.pytest.ini_options]
+pythonpath = [
+    "."
+]
+

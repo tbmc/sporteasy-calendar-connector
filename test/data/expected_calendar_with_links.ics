@@ -3,12 +3,12 @@ VERSION:2.0
 PRODID:-//Sporteasy Calendar Connector
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
+X-WR-CALDESC:SportEasy Calendar | Last sync: 2024-12-25 10:45:00
+X-WR-CALNAME:SportEasy Calendar
 REFRESH-INTERVAL;VALUE=DURATION:PT8H
 SUMMARY:SportEasyCalendar
 VTIMEZONE:UTC
 X-PUBLISHED-TTL:PT8H
-X-WR-CALDESC:SportEasy Calendar | Last sync: 2024-12-25 10:45:00
-X-WR-CALNAME:SportEasy Calendar
 X-WR-TIMEZONE:Europe/Paris
 BEGIN:VEVENT
 SUMMARY:Equipe 1 - Tournoi 1 - En attente
