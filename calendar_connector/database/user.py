@@ -32,19 +32,19 @@ def save_user(username: str, password: str) -> User:
 
     user = already_existing_users[0]
     if user.password != password:
-        user.password = password # pyright: ignore[reportAttributeAccessIssue]
+        user.password = password # type: ignore[assignment]
         user.save()# pyright: ignore[reportUnknownMemberType]
         logger.info("Updated stored password for username=%s", username)
     else:
         logger.debug("User already exists with unchanged password for username=%s", username)
 
-    return cast(User, user)
+    return user
 
 
 def get_username_password(user_id: int) -> tuple[str, str]:
     logger.debug("Fetching username/password for user_id=%s", user_id)
     user: User = User.select().where(User.id == user_id).get() # pyright: ignore[reportUnknownVariableType, reportUnknownMemberType]
-    return user.username, user.password # pyright: ignore[reportUnknownVariableType, reportReturnType, reportUnknownMemberType]
+    return user.username, user.password # type: ignore[return-value]
 
 
 def generate_links_data(
@@ -59,5 +59,5 @@ def generate_links_data(
     )
     user: User = User.select().where(User.id == user_id).get() # pyright: ignore[reportUnknownVariableType, reportUnknownMemberType]
     return generate_hash(
-        team_id, event_id, user.id, user.username, user.password, user.salt, presence
+        team_id, event_id, user.id, user.username, user.password, user.salt, presence # type: ignore[arg-type]
     )

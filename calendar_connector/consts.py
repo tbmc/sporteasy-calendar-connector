@@ -1,4 +1,5 @@
 from collections import namedtuple
+from typing import NamedTuple
 import pytz
 
 url_base = "https://api.sporteasy.net/v2.1"
@@ -40,5 +41,8 @@ MY_PRESENCE = {
     "not_played": "CANCELLED",
 }
 
-_presence_type = namedtuple("_presence_type", ["present", "absent"])
-PRESENCE = _presence_type("yes", "no")
+class PresenceType(NamedTuple):
+    present: str
+    absent: str
+
+PRESENCE = PresenceType("yes", "no")

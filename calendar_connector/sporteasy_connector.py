@@ -49,7 +49,11 @@ class SporteasyConnector:
                 authenticate_response.status_code,
             )
             raise Exception("Authentication error")
-        token: str = authenticate_response.cookies.get("sporteasy")
+        token: str | None = authenticate_response.cookies.get("sporteasy")
+        if token is None:
+            logger.error("Authentication succeeded but no token found for user=%s", username)
+            raise Exception("Authentication error: no token received")
+
         # csrf = authenticate_response.cookies.get(csrf_name)
         logger.debug("Authentication succeeded for user=%s", username)
         return token
