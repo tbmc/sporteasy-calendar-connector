@@ -1,5 +1,6 @@
 import base64
 import hashlib
+import logging
 import random
 import string
 
@@ -9,8 +10,11 @@ from nacl.public import SealedBox
 from calendar_connector.consts import PRESENCE
 from calendar_connector.cryptography_key_generation import get_key_cached
 
+logger = logging.getLogger(__name__)
+
 
 def generate_salt() -> str:
+    logger.debug("Generating random salt")
     chars: list[str] = []
     for i in range(random.randint(30, 50)):
         chars.append(random.choice(string.printable))
@@ -35,11 +39,13 @@ def generate_hash(
 
 
 def get_public_key_base64() -> str:
+    logger.debug("Encoding public key to base64")
     public_key, _ = get_key_cached()
     return base64.b64encode(bytes(public_key)).decode("utf-8")
 
 
 def encrypt_message(password: str) -> bytes:
+    logger.debug("Encrypting message payload")
     public_key, _ = get_key_cached()
     sealed_box = SealedBox(public_key)
     encrypted = sealed_box.encrypt(password.encode("utf-8"), HexEncoder)
@@ -47,6 +53,7 @@ def encrypt_message(password: str) -> bytes:
 
 
 def decrypt_message(encrypted_password: bytes) -> str:
+    logger.debug("Decrypting message payload")
     _, private_key = get_key_cached()
     unsealed_box = SealedBox(private_key)
     plaintext = unsealed_box.decrypt(encrypted_password, HexEncoder)
