@@ -18,8 +18,8 @@ class User(BaseModel):
 
 def save_user(username: str, password: str) -> User:
     already_existing_users: list[User] = list(
-        User.select().where(User.username == username)
-    )  # pyright: ignore[reportUnknownMemberType]
+        User.select().where(User.username == username)  # pyright: ignore[reportUnknownMemberType]
+    )
     logger.debug(
         "save_user called for username=%s (matches=%s)",
         username,
@@ -69,9 +69,9 @@ def generate_links_data(
     return generate_hash(
         team_id,
         event_id,
-        user.id,
-        user.username,
-        user.password,
-        user.salt,
+        user.id,  # pyright: ignore[reportUnknownMemberType,reportArgumentType]
+        user.username,  # pyright: ignore[reportUnknownMemberType,reportArgumentType]
+        user.password,  # pyright: ignore[reportUnknownMemberType,reportArgumentType]
+        user.salt,  # pyright: ignore[reportUnknownMemberType,reportArgumentType]
         presence,  # type: ignore[arg-type]
     )
