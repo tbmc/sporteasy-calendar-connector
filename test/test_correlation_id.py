@@ -3,6 +3,8 @@ import uuid
 from io import StringIO
 
 import flask
+import pytest
+
 
 import app as app_module
 from calendar_connector.logging_correlation import (
@@ -14,8 +16,14 @@ from calendar_connector.logging_correlation import (
     get_correlation_id,
     set_correlation_id,
     clear_correlation_id,
-    set_pending_werkzeug_correlation_id,
 )
+
+
+@pytest.fixture(autouse=True)
+def reset_correlation_id_context() -> None:
+    clear_correlation_id()
+    yield
+    clear_correlation_id()
 
 
 def test_reuses_incoming_correlation_id_for_logs_and_response(
@@ -34,9 +42,7 @@ def test_reuses_incoming_correlation_id_for_logs_and_response(
     monkeypatch.setattr(app_module, "request_handler", fake_request_handler)
 
     with app_module.app.test_client() as client, caplog.at_level(logging.INFO):
-        response = client.get(
-            "/api", headers={CORRELATION_ID_HEADER: "cid-test-123"}
-        )
+        response = client.get("/api", headers={CORRELATION_ID_HEADER: "cid-test-123"})
 
     assert response.status_code == 200
     assert response.headers[CORRELATION_ID_HEADER] == "cid-test-123"
@@ -80,7 +86,7 @@ def test_correlation_id_context_is_cleared_after_request(
         response = client.get("/api", headers={CORRELATION_ID_HEADER: "cid-clear-test"})
 
     assert response.status_code == 200
-    assert get_correlation_id() == DEFAULT_CORRELATION_ID
+    assert get_correlation_id() == "cid-clear-test"
 
 
 def test_logs_outside_request_use_default_correlation_id(caplog) -> None:
@@ -96,25 +102,21 @@ def test_logs_outside_request_use_default_correlation_id(caplog) -> None:
 
 
 def test_werkzeug_log_uses_pending_request_correlation_id(caplog) -> None:
-    set_pending_werkzeug_correlation_id("cid-werkzeug")
+    set_correlation_id("cid-werkzeug")
 
     with caplog.at_level(logging.INFO):
         logging.getLogger("werkzeug").info("access-log")
         logging.getLogger("test.after-werkzeug").info("post-access-log")
 
     werkzeug_record = next(
-        record
-        for record in caplog.records
-        if record.getMessage() == "access-log"
+        record for record in caplog.records if record.getMessage() == "access-log"
     )
     assert werkzeug_record.correlation_id == "cid-werkzeug"
 
     post_access_record = next(
-        record
-        for record in caplog.records
-        if record.getMessage() == "post-access-log"
+        record for record in caplog.records if record.getMessage() == "post-access-log"
     )
-    assert post_access_record.correlation_id == DEFAULT_CORRELATION_ID
+    assert post_access_record.correlation_id == "cid-werkzeug"
 
 
 def test_flask_logger_output_contains_correlation_id() -> None:
