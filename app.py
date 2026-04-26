@@ -22,10 +22,8 @@ from calendar_connector.logging_correlation import (
     DEFAULT_LOG_DATEFMT,
     DEFAULT_LOG_FORMAT,
     apply_correlation_formatter_to_logger_handlers,
-    clear_correlation_id,
     get_correlation_id,
     install_correlation_log_record_factory,
-    set_pending_werkzeug_correlation_id,
     set_correlation_id,
 )
 import google.cloud.logging
@@ -42,7 +40,9 @@ install_correlation_log_record_factory()
 gcp_project = os.getenv("GOOGLE_CLOUD_PROJECT", default="").strip().lower()
 if len(gcp_project) > 0:
     client = google.cloud.logging.Client()
-    client.setup_logging(log_level=logging.DEBUG)  # pyright: ignore[reportUnknownMemberType]
+    client.setup_logging(  # pyright: ignore[reportUnknownMemberType]
+        log_level=logging.DEBUG
+    )  # pyright: ignore[reportUnknownMemberType]
     install_correlation_log_record_factory()
     logger.info(
         "GOOGLE_CLOUD_PROJECT set to '%s', logs will be sent to GCP", gcp_project
@@ -79,13 +79,7 @@ def handle_preflight() -> flask.Response | None:
 def add_correlation_id_header(response: flask.Response) -> flask.Response:
     correlation_id = get_correlation_id()
     response.headers[CORRELATION_ID_HEADER] = correlation_id
-    set_pending_werkzeug_correlation_id(correlation_id)
     return response
-
-
-@app.teardown_request
-def clear_correlation_id_context(_: BaseException | None) -> None:
-    clear_correlation_id()
 
 
 def _list_teams_response() -> str:

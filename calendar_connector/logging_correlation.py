@@ -14,9 +14,6 @@ DEFAULT_LOG_DATEFMT = "%Y-%m-%d %H:%M:%S"
 _correlation_id_ctx: ContextVar[str] = ContextVar(
     "correlation_id", default=DEFAULT_CORRELATION_ID
 )
-_pending_werkzeug_correlation_id_ctx: ContextVar[str] = ContextVar(
-    "pending_werkzeug_correlation_id", default=DEFAULT_CORRELATION_ID
-)
 _base_log_record_factory = logging.getLogRecordFactory()
 _is_log_record_factory_installed = False
 
@@ -41,16 +38,6 @@ def clear_correlation_id() -> None:
     _correlation_id_ctx.set(DEFAULT_CORRELATION_ID)
 
 
-def set_pending_werkzeug_correlation_id(correlation_id: str) -> None:
-    _pending_werkzeug_correlation_id_ctx.set(correlation_id)
-
-
-def pop_pending_werkzeug_correlation_id() -> str:
-    correlation_id = _pending_werkzeug_correlation_id_ctx.get()
-    _pending_werkzeug_correlation_id_ctx.set(DEFAULT_CORRELATION_ID)
-    return correlation_id
-
-
 def install_correlation_log_record_factory() -> None:
     global _is_log_record_factory_installed
     if _is_log_record_factory_installed:
@@ -59,15 +46,7 @@ def install_correlation_log_record_factory() -> None:
     def correlation_log_record_factory(*args: Any, **kwargs: Any) -> logging.LogRecord:
         record = _base_log_record_factory(*args, **kwargs)
         correlation_id = get_correlation_id()
-        if (
-            correlation_id == DEFAULT_CORRELATION_ID
-            and record.name.startswith("werkzeug")
-        ):
-            pending = pop_pending_werkzeug_correlation_id()
-            if pending != DEFAULT_CORRELATION_ID:
-                correlation_id = pending
-
-        record.correlation_id = correlation_id  # type: ignore[attr-defined]
+        record.correlation_id = correlation_id
         return record
 
     logging.setLogRecordFactory(correlation_log_record_factory)
