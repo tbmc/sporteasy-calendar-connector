@@ -17,20 +17,33 @@ from calendar_connector.custom_exceptions import BadTokenException
 from calendar_connector.presence_updater import set_presence_to_event
 from calendar_connector.database.create_tables import create_db
 from calendar_connector.cryptography import encrypt_message, decrypt_message
+from calendar_connector.logging_correlation import (
+    CORRELATION_ID_HEADER,
+    DEFAULT_LOG_DATEFMT,
+    DEFAULT_LOG_FORMAT,
+    apply_correlation_formatter_to_logger_handlers,
+    clear_correlation_id,
+    get_correlation_id,
+    install_correlation_log_record_factory,
+    set_pending_werkzeug_correlation_id,
+    set_correlation_id,
+)
 import google.cloud.logging
 
 logger = logging.getLogger(__name__)
 
 logging.basicConfig(
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    datefmt="%Y-%m-%d %H:%M:%S",
+    format=DEFAULT_LOG_FORMAT,
+    datefmt=DEFAULT_LOG_DATEFMT,
     level=logging.INFO,
 )
+install_correlation_log_record_factory()
 
 gcp_project = os.getenv("GOOGLE_CLOUD_PROJECT", default="").strip().lower()
 if len(gcp_project) > 0:
     client = google.cloud.logging.Client()
     client.setup_logging(log_level=logging.DEBUG)  # pyright: ignore[reportUnknownMemberType]
+    install_correlation_log_record_factory()
     logger.info(
         "GOOGLE_CLOUD_PROJECT set to '%s', logs will be sent to GCP", gcp_project
     )
@@ -40,6 +53,10 @@ else:
 create_db()
 
 app = flask.Flask(__name__)
+
+for logger_name in ["flask.app", "werkzeug", "gunicorn.error", "gunicorn.access"]:
+    apply_correlation_formatter_to_logger_handlers(logging.getLogger(logger_name))
+apply_correlation_formatter_to_logger_handlers(app.logger)
 
 CORS_HEADERS = {
     "Access-Control-Allow-Origin": "*",
@@ -51,10 +68,24 @@ CORS_HEADERS = {
 
 @app.before_request
 def handle_preflight() -> flask.Response | None:
+    set_correlation_id(flask.request.headers.get(CORRELATION_ID_HEADER))
     if flask.request.method == "OPTIONS":
         logger.debug("Handling CORS preflight request")
         return flask.Response("", headers=CORS_HEADERS)
     return None
+
+
+@app.after_request
+def add_correlation_id_header(response: flask.Response) -> flask.Response:
+    correlation_id = get_correlation_id()
+    response.headers[CORRELATION_ID_HEADER] = correlation_id
+    set_pending_werkzeug_correlation_id(correlation_id)
+    return response
+
+
+@app.teardown_request
+def clear_correlation_id_context(_: BaseException | None) -> None:
+    clear_correlation_id()
 
 
 def _list_teams_response() -> str:
