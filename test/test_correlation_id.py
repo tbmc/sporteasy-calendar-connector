@@ -1,4 +1,5 @@
 import logging
+from typing import Generator, cast
 import uuid
 from io import StringIO
 
@@ -19,16 +20,20 @@ from calendar_connector.logging_correlation import (
 )
 
 
+class LogRecordWithCorrelationId(logging.LogRecord):
+    correlation_id: str
+
+
 @pytest.fixture(autouse=True)
-def reset_correlation_id_context() -> None:
+def reset_correlation_id_context() -> Generator[None, None, None]:
     clear_correlation_id()
     yield
     clear_correlation_id()
 
 
 def test_reuses_incoming_correlation_id_for_logs_and_response(
-    monkeypatch,
-    caplog,
+    monkeypatch: pytest.MonkeyPatch,
+    caplog: pytest.LogCaptureFixture,
 ) -> None:
     def fake_request_handler() -> flask.Response:
         logging.getLogger("calendar_connector.sporteasy_connector").info(
@@ -48,7 +53,7 @@ def test_reuses_incoming_correlation_id_for_logs_and_response(
     assert response.headers[CORRELATION_ID_HEADER] == "cid-test-123"
 
     targeted_records = [
-        record
+        cast(LogRecordWithCorrelationId, record)
         for record in caplog.records
         if record.getMessage() in {"fake connector log", "fake converter log"}
     ]
@@ -57,7 +62,7 @@ def test_reuses_incoming_correlation_id_for_logs_and_response(
 
 
 def test_generates_uuid_correlation_id_when_missing(
-    monkeypatch,
+    monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     monkeypatch.setattr(
         app_module,
@@ -74,7 +79,7 @@ def test_generates_uuid_correlation_id_when_missing(
 
 
 def test_correlation_id_context_is_cleared_after_request(
-    monkeypatch,
+    monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     monkeypatch.setattr(
         app_module,
@@ -89,19 +94,23 @@ def test_correlation_id_context_is_cleared_after_request(
     assert get_correlation_id() == "cid-clear-test"
 
 
-def test_logs_outside_request_use_default_correlation_id(caplog) -> None:
+def test_logs_outside_request_use_default_correlation_id(
+    caplog: pytest.LogCaptureFixture,
+) -> None:
     with caplog.at_level(logging.INFO):
         logging.getLogger("test.outside").info("outside-request-log")
 
     outside_record = next(
-        record
+        cast(LogRecordWithCorrelationId, record)
         for record in caplog.records
         if record.getMessage() == "outside-request-log"
     )
     assert outside_record.correlation_id == DEFAULT_CORRELATION_ID
 
 
-def test_werkzeug_log_uses_pending_request_correlation_id(caplog) -> None:
+def test_werkzeug_log_uses_pending_request_correlation_id(
+    caplog: pytest.LogCaptureFixture,
+) -> None:
     set_correlation_id("cid-werkzeug")
 
     with caplog.at_level(logging.INFO):
@@ -109,12 +118,16 @@ def test_werkzeug_log_uses_pending_request_correlation_id(caplog) -> None:
         logging.getLogger("test.after-werkzeug").info("post-access-log")
 
     werkzeug_record = next(
-        record for record in caplog.records if record.getMessage() == "access-log"
+        cast(LogRecordWithCorrelationId, record)
+        for record in caplog.records
+        if record.getMessage() == "access-log"
     )
     assert werkzeug_record.correlation_id == "cid-werkzeug"
 
     post_access_record = next(
-        record for record in caplog.records if record.getMessage() == "post-access-log"
+        cast(LogRecordWithCorrelationId, record)
+        for record in caplog.records
+        if record.getMessage() == "post-access-log"
     )
     assert post_access_record.correlation_id == "cid-werkzeug"
 
