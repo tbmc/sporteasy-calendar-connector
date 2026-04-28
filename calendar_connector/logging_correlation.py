@@ -20,7 +20,7 @@ _is_log_record_factory_installed = False
 DEFAULT_LEVEL = logging.DEBUG
 
 formatter = logging.Formatter(
-    "%(asctime)s - %(name)s - %(levelname)s - [%(correlation_id)s] - %(message)s",
+    DEFAULT_LOG_FORMAT,
     datefmt=DEFAULT_LOG_DATEFMT,
 )
 
@@ -46,6 +46,14 @@ def get_correlation_id() -> str:
 
 def clear_correlation_id() -> None:
     _correlation_id_ctx.set(DEFAULT_CORRELATION_ID)
+
+
+class CorrelationIdJsonFieldsFilter(logging.Filter):
+    def filter(self, record: logging.LogRecord) -> bool:
+        print("LOGGING !!!")
+        correlation_id = get_correlation_id()
+        record.correlation_id = correlation_id
+        return True
 
 
 def setup_correlation_logging() -> None:
@@ -77,3 +85,4 @@ def apply_correlation_formatter_to_logger_handlers(
 ) -> None:
     for handler in logger.handlers:
         handler.setFormatter(formatter)
+        handler.addFilter(CorrelationIdJsonFieldsFilter())

@@ -10,6 +10,7 @@ import pytest
 import app as app_module
 from calendar_connector.logging_correlation import (
     CORRELATION_ID_HEADER,
+    CorrelationIdJsonFieldsFilter,
     DEFAULT_CORRELATION_ID,
     DEFAULT_LOG_FORMAT,
     DEFAULT_LOG_DATEFMT,
@@ -140,11 +141,7 @@ def test_flask_logger_output_contains_correlation_id() -> None:
     test_logger.propagate = False
     test_logger.setLevel(logging.INFO)
 
-    apply_correlation_formatter_to_logger_handlers(
-        test_logger,
-        fmt=DEFAULT_LOG_FORMAT,
-        datefmt=DEFAULT_LOG_DATEFMT,
-    )
+    apply_correlation_formatter_to_logger_handlers(test_logger)
 
     set_correlation_id("cid-format-test")
     try:
@@ -154,3 +151,25 @@ def test_flask_logger_output_contains_correlation_id() -> None:
 
     rendered_log = stream.getvalue()
     assert "correlation_id=cid-format-test" in rendered_log
+
+
+def test_json_fields_filter_injects_correlation_id() -> None:
+    record = logging.LogRecord(
+        name="test.json.fields",
+        level=logging.INFO,
+        pathname=__file__,
+        lineno=1,
+        msg="structured-log",
+        args=(),
+        exc_info=None,
+    )
+
+    set_correlation_id("cid-json-fields")
+    try:
+        accepted = CorrelationIdJsonFieldsFilter().filter(record)
+    finally:
+        clear_correlation_id()
+
+    assert accepted is True
+    assert getattr(record, "json_fields", {}).get("correlation_id") == "cid-json-fields"
+
