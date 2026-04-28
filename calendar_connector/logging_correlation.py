@@ -1,4 +1,5 @@
 import logging
+import sys
 import uuid
 from contextvars import ContextVar
 from typing import Any
@@ -16,6 +17,12 @@ _correlation_id_ctx: ContextVar[str] = ContextVar(
 )
 _base_log_record_factory = logging.getLogRecordFactory()
 _is_log_record_factory_installed = False
+DEFAULT_LEVEL = logging.DEBUG
+
+formatter = logging.Formatter(
+    "%(asctime)s - %(name)s - %(levelname)s - [%(correlation_id)s] - %(message)s",
+    datefmt=DEFAULT_LOG_DATEFMT,
+)
 
 
 def generate_correlation_id() -> str:
@@ -31,11 +38,23 @@ def set_correlation_id(correlation_id: str | None) -> str:
 
 
 def get_correlation_id() -> str:
-    return _correlation_id_ctx.get()
+    correlation_id = _correlation_id_ctx.get(None)
+    if correlation_id is None or correlation_id.strip() == "":
+        return "∅"
+    return correlation_id
 
 
 def clear_correlation_id() -> None:
     _correlation_id_ctx.set(DEFAULT_CORRELATION_ID)
+
+
+def setup_correlation_logging() -> None:
+    log_handler = logging.StreamHandler(sys.stdout)
+    log_handler.setLevel(DEFAULT_LEVEL)
+
+    log_handler.setFormatter(formatter)
+
+    logging.basicConfig(level=DEFAULT_LEVEL, handlers=[log_handler])
 
 
 def install_correlation_log_record_factory() -> None:
@@ -55,9 +74,6 @@ def install_correlation_log_record_factory() -> None:
 
 def apply_correlation_formatter_to_logger_handlers(
     logger: logging.Logger,
-    fmt: str = DEFAULT_LOG_FORMAT,
-    datefmt: str = DEFAULT_LOG_DATEFMT,
 ) -> None:
-    formatter = logging.Formatter(fmt=fmt, datefmt=datefmt)
     for handler in logger.handlers:
         handler.setFormatter(formatter)
